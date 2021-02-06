@@ -12,6 +12,7 @@ namespace Courses.Domain
         {
             MotherLanguageIso = motherIso;
             LeaningLanguageIso = learningIso;
+            translationDictionary.Add("English", "Inglés");
         }
         public string Translate(string term) =>
             translationDictionary[term];

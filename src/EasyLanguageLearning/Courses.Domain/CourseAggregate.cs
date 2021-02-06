@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using System;
 
 namespace Courses.Domain
 {

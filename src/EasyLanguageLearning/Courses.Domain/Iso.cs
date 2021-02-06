@@ -1,4 +1,5 @@
 ﻿using EasyLanguageLearning.Domain.Shared.Kernel;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,6 @@ using System.Threading.Tasks;
 
 namespace Courses.Domain
 {
-    public enum IsoCodes
-    {
-        None, en, es, fr, de, ca
-    }
     public class Iso : ValueObject
     {
         public static Iso Empty { get; } = new Iso("");
