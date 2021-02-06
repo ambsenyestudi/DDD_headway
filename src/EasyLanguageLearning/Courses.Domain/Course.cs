@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Courses.Domain
+﻿namespace Courses.Domain
 {
     public class Course
     {
-        public string Name { get; }
-        public Course(Iso motherLanguagIso, Iso learningLanguageIso)
-        {
+        private readonly Translator translator;
 
+        public string Name { get; }
+        public Course(Translator translator, string languageName)
+        {
+            this.translator = translator;
+            Name = translator.Translate(languageName);
         }
 
     }

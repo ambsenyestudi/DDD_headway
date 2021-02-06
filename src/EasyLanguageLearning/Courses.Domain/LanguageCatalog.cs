@@ -4,13 +4,13 @@ using System.Linq;
 namespace Courses.Domain
 {
     public class LanguageCatalog
-    {
-        private readonly IEnumerable<Iso> languages;
-        public LanguageCatalog(IEnumerable<Iso> languages)
+    {        
+        private readonly IList<Language> languageList;
+        public LanguageCatalog(IList<Language> languageList)
         {
-            this.languages = languages;
+            this.languageList = languageList;
         }
         public bool Contains(params Iso[] isoList) =>
-            isoList.All(iso => languages.Contains(iso));
+            isoList.All(iso => languageList.Any(la => la.Iso == iso));
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Courses.Domain;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Courses.Tests
@@ -6,23 +7,13 @@ namespace Courses.Tests
     public class CourseAgregateBuilder
     {
         private LanguageCatalog languageCatalog;
-        private string motherLanguge;
-        private string learningLanguage;
 
-        public CourseAgregateBuilder WithLanguagesInCatalog(params IsoCodes[] isoCodeList)
+        public CourseAgregateBuilder WithLanguagesInCatalog(Dictionary<IsoCodes,string> languagesDictionary)
         {
-            var isoList = isoCodeList.Select(iso => Iso.CreateIso(iso));
-            languageCatalog = new LanguageCatalog(isoList);
-            return this;
-        }
-        public CourseAgregateBuilder WithMotherLanguage(string motherLanguge)
-        {
-            this.motherLanguge = motherLanguge;
-            return this;
-        }
-        public CourseAgregateBuilder WithLearningLanguage(string learningLanguage)
-        {
-            this.learningLanguage = learningLanguage;
+            var languageList = languagesDictionary
+                .Select((it) => Language.CreateFromNameAndIso(it.Value, Iso.CreateIso(it.Key)))
+                .ToList();
+            languageCatalog = new LanguageCatalog(languageList);
             return this;
         }
         public CourseAggregate Build()

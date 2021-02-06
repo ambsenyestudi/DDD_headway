@@ -19,8 +19,8 @@ namespace Courses.Domain
             var learningIso = IsoFromRaw(leaningLanguageIsoRaw);
             EnsureNotSameLanguage(motherIso, learningIso);
             EnsureLanguagesInCatalog(motherIso, learningIso);
-            
-            return new Course(motherIso, learningIso);
+            var translator = new Translator(motherIso, learningIso);
+            return new Course(translator, "English");
         }
 
         private IsoCodes ParseIsoCode(string isoCodeRaw)
