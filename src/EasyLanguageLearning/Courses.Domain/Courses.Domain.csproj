@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyLanguageLearning.Domain.Shared.Kernel\EasyLanguageLearning.Domain.Shared.Kernel.csproj" />
+  </ItemGroup>
+
 </Project>

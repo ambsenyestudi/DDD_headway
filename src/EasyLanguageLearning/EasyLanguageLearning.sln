@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Domain", "Courses.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Tests", "Courses.Tests\Courses.Tests.csproj", "{4D31EE8A-261B-48C0-B423-1E8511C0C8F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLanguageLearning.Domain.Shared.Kernel", "EasyLanguageLearning.Domain.Shared.Kernel\EasyLanguageLearning.Domain.Shared.Kernel.csproj", "{6590F5FB-05E4-430F-9EC9-ACA561069347}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4D31EE8A-261B-48C0-B423-1E8511C0C8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D31EE8A-261B-48C0-B423-1E8511C0C8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D31EE8A-261B-48C0-B423-1E8511C0C8F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6590F5FB-05E4-430F-9EC9-ACA561069347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6590F5FB-05E4-430F-9EC9-ACA561069347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6590F5FB-05E4-430F-9EC9-ACA561069347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6590F5FB-05E4-430F-9EC9-ACA561069347}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

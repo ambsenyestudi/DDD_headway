@@ -1,4 +1,5 @@
 using Courses.Domain;
+using System;
 using Xunit;
 
 namespace Courses.Tests
@@ -8,10 +9,19 @@ namespace Courses.Tests
         [Fact]
         public void ChooseACourse()
         {
-            var courseName = "langauge1";
+            var motherLanguage = "es";
+            var learningLanguage = "en";
             var sut = new CourseAggregate();
-            var result = sut.ChooseACourse(courseName);
+            var result = sut.ChooseACourse(motherLanguage, learningLanguage);
             Assert.NotNull(result);
+        }
+        [Fact]
+        public void GetNotGetCoursesWithSameLanguage()
+        {
+            var motherLanguage = "es";
+            var learningLanguage = "es";
+            var sut = new CourseAggregate();
+            Assert.Throws<ArgumentException>(()=> sut.ChooseACourse(motherLanguage, learningLanguage));
         }
     }
 }
