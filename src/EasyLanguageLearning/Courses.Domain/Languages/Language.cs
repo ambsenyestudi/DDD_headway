@@ -2,7 +2,7 @@
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System.Collections.Generic;
 
-namespace Courses.Domain
+namespace Courses.Domain.Languages
 {
     public class Language : ValueObject
     {

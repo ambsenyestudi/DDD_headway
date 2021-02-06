@@ -45,5 +45,25 @@ namespace Courses.Tests
             sut.SetName(level, translationLookUpMock.Object);
             Assert.Contains(exptectedLevel, sut.Name);
         }
+        [Fact]
+        public void LoadUnits()
+        {
+            var unitGuid = Guid.NewGuid();
+            var level = 1;
+            var motherLang = Language.CreateFromNameAndIso("Español", Iso.CreateIso(IsoCodes.es));
+            var learnLang = Language.CreateFromNameAndIso("English", Iso.CreateIso(IsoCodes.en));
+            var sut = new Course(Guid.Empty, motherLang, learnLang);
+            var translationLookUpMock = new Mock<ITranslationLookUp>();
+            translationLookUpMock
+                .Setup(x => x.Translate(It.IsAny<Iso>(), It.IsAny<Iso>(), It.IsAny<string>()))
+                .Returns(string.Empty);
+            sut.SetName(level, translationLookUpMock.Object);
+            sut.LoadUnits(new List<Unit> { new Unit(unitGuid, "Comienzo") });
+            sut.LoadUnitContent(unitGuid, new List<Translation>() 
+            { 
+                Translation.Empty
+            });
+            Assert.NotEmpty(sut.UnitList);
+        }
     }
 }

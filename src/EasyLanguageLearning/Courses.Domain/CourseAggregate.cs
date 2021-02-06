@@ -2,6 +2,7 @@
 using Courses.Domain.Translations;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System;
+using System.Collections.Generic;
 
 namespace Courses.Domain
 {
@@ -11,12 +12,14 @@ namespace Courses.Domain
         private const string InvalidLanguageError = "Invalid language Iso";
         private const string LanguageNotInCatalogError = "Language Iso not present in catalog";
         private readonly ILanguageLookUp languageLookUp;
-        private readonly ITranslationLookUp translationLookup;
+        private readonly ITranslationLookUp translationLookUp;
+        private readonly IUnitLookUp unitLookUp;
 
-        public CourseAggregate(ILanguageLookUp languageLookUp, ITranslationLookUp translationLookup)
+        public CourseAggregate(ILanguageLookUp languageLookUp, ITranslationLookUp translationLookUp, IUnitLookUp unitLookUp)
         {
             this.languageLookUp = languageLookUp;
-            this.translationLookup = translationLookup;
+            this.translationLookUp = translationLookUp;
+            this.unitLookUp = unitLookUp;
         }
         public Course ChooseACourse(string motherLanguageIsoRaw, string leaningLanguageIsoRaw, int level, Guid courseId)
         {
@@ -26,7 +29,16 @@ namespace Courses.Domain
             EnsureLanguagesInCatalog(motherIso, learningIso);
             
             var course = CouresFromIso(courseId, motherIso, learningIso);
-            course.SetName(level, translationLookup);
+            course.SetName(level, translationLookUp);
+
+            course.LoadUnits(unitLookUp.GetUnits(courseId));
+
+            return course;
+        }
+        
+        public Course LoadUnitContent(Course course, Guid unitId, List<Translation> content)
+        {
+            course.LoadUnitContent(unitId, content);
             return course;
         }
 

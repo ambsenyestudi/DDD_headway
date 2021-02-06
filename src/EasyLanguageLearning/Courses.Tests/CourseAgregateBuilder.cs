@@ -39,7 +39,10 @@ namespace Courses.Tests
             translationLookupMock
                 .Setup(t => t.Translate(It.IsAny<Iso>(), It.IsAny<Iso>(), It.IsAny<string>()))
                 .Returns((Iso from, Iso to, string term) => translationDictionary[term]);
-            return new CourseAggregate(languageLookupMock.Object, translationLookupMock.Object);
+            var unitLookUp = new Mock<IUnitLookUp>();
+            unitLookUp.Setup(ul => ul.GetUnits(It.IsAny<Guid>()))
+                .Returns(new List<Unit>());
+            return new CourseAggregate(languageLookupMock.Object, translationLookupMock.Object, unitLookUp.Object);
         }
 
         private Language CreateLangauge(Iso iso, List<Language> languageList)
