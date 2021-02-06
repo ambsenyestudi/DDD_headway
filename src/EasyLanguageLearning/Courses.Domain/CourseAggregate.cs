@@ -6,16 +6,20 @@ namespace Courses.Domain
     {
         private const string DuplicatedLanguageError = "Learning language cannot be the same as mother language";
         private const string InvalidLanguageError = "Invalid language Iso";
+        private const string LanguageNotInCatalogError = "Language Iso not present in catalog";
+        private readonly LanguageCatalog languageCatalog;
+
+        public CourseAggregate(LanguageCatalog languageCatalog)
+        {
+            this.languageCatalog = languageCatalog;
+        }
         public Course ChooseACourse(string motherLanguageIsoRaw, string leaningLanguageIsoRaw)
         {
             var motherIso = IsoFromRaw(motherLanguageIsoRaw);
             var learningIso = IsoFromRaw(leaningLanguageIsoRaw);
-
-            if (motherIso == learningIso)
-            {
-                throw new ArgumentException(DuplicatedLanguageError);
-            }
-
+            EnsureNotSameLanguage(motherIso, learningIso);
+            EnsureLanguagesInCatalog(motherIso, learningIso);
+            
             return new Course(motherIso, learningIso);
         }
 
@@ -35,6 +39,22 @@ namespace Courses.Domain
             return result == Iso.Empty
                 ? throw new ArgumentException(InvalidLanguageError)
                 : result;
+        }
+
+        private void EnsureLanguagesInCatalog(Iso motherIso, Iso lanaguagIso)
+        {
+            if (!languageCatalog.Contains(motherIso) ||
+                !languageCatalog.Contains(lanaguagIso))
+            {
+                throw new ArgumentException(DuplicatedLanguageError);
+            }
+        }
+        private void EnsureNotSameLanguage(Iso motherIso, Iso learningIso)
+        {
+            if (motherIso == learningIso)
+            {
+                throw new ArgumentException(LanguageNotInCatalogError);
+            }
         }
     }
 }
