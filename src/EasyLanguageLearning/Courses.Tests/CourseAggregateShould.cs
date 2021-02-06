@@ -23,5 +23,13 @@ namespace Courses.Tests
             var sut = new CourseAggregate();
             Assert.Throws<ArgumentException>(()=> sut.ChooseACourse(motherLanguage, learningLanguage));
         }
+        [Theory]
+        [InlineData("x81","es")]
+        [InlineData("es", "x81")]
+        public void HaveValidIsoCodes(string motherLanguage, string learningLanguage)
+        {
+            var sut = new CourseAggregate();
+            Assert.Throws<ArgumentException>(() => sut.ChooseACourse(motherLanguage, learningLanguage));
+        }
     }
 }
