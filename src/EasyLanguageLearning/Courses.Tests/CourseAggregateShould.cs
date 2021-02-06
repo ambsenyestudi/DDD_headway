@@ -78,5 +78,6 @@ namespace Courses.Tests
             var result = sut.ChooseACourse(SPANISH_RAW_ISO, ENGLISH_RAW_ISO, 1, Guid.Empty);
             Assert.Contains(exptected, result.Name);
         }
+        
     }
 }
