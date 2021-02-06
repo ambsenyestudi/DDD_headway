@@ -1,4 +1,6 @@
-﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+﻿using Courses.Domain.Languages;
+using Courses.Domain.Translations;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System;
 
 namespace Courses.Domain
@@ -8,20 +10,24 @@ namespace Courses.Domain
         private const string DuplicatedLanguageError = "Learning language cannot be the same as mother language";
         private const string InvalidLanguageError = "Invalid language Iso";
         private const string LanguageNotInCatalogError = "Language Iso not present in catalog";
-        private readonly LanguageCatalog languageCatalog;
+        private readonly ILanguageLookUp languageLookUp;
+        private readonly ITranslationLookUp translationLookup;
 
-        public CourseAggregate(LanguageCatalog languageCatalog)
+        public CourseAggregate(ILanguageLookUp languageLookUp, ITranslationLookUp translationLookup)
         {
-            this.languageCatalog = languageCatalog;
+            this.languageLookUp = languageLookUp;
+            this.translationLookup = translationLookup;
         }
-        public Course ChooseACourse(string motherLanguageIsoRaw, string leaningLanguageIsoRaw)
+        public Course ChooseACourse(string motherLanguageIsoRaw, string leaningLanguageIsoRaw, int level, Guid courseId)
         {
             var motherIso = IsoFromRaw(motherLanguageIsoRaw);
             var learningIso = IsoFromRaw(leaningLanguageIsoRaw);
             EnsureNotSameLanguage(motherIso, learningIso);
             EnsureLanguagesInCatalog(motherIso, learningIso);
-            var translator = new Translator(motherIso, learningIso);
-            return new Course(translator, "English");
+            
+            var course = CouresFromIso(courseId, motherIso, learningIso);
+            course.SetName(level, translationLookup);
+            return course;
         }
 
         private IsoCodes ParseIsoCode(string isoCodeRaw)
@@ -44,8 +50,8 @@ namespace Courses.Domain
 
         private void EnsureLanguagesInCatalog(Iso motherIso, Iso lanaguagIso)
         {
-            if (!languageCatalog.Contains(motherIso) ||
-                !languageCatalog.Contains(lanaguagIso))
+            if (!languageLookUp.CatalogContains(motherIso) ||
+                !languageLookUp.CatalogContains(lanaguagIso))
             {
                 throw new ArgumentException(DuplicatedLanguageError);
             }
@@ -56,6 +62,12 @@ namespace Courses.Domain
             {
                 throw new ArgumentException(LanguageNotInCatalogError);
             }
+        }
+        private Course CouresFromIso(Guid id, Iso motherIso, Iso learningIso)
+        {
+            var motherLanguage = languageLookUp.GetLanguage(motherIso);
+            var learningLanguage = languageLookUp.GetLanguage(learningIso);
+            return new Course(id, motherLanguage, learningLanguage);
         }
     }
 }

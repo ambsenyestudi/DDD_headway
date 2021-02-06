@@ -12,8 +12,6 @@ namespace Courses.Tests
         private const IsoCodes ENGLISH_ISO_CODE = IsoCodes.en;
         private readonly string SPANISH_RAW_ISO = SPANISH_ISO_CODE.ToString();
         private readonly string ENGLISH_RAW_ISO = ENGLISH_ISO_CODE.ToString();
-        private readonly Language SPANISH_LANG = Language.CreateFromNameAndIso("Español", Iso.CreateIso(SPANISH_ISO_CODE));
-        private readonly Language ENGLISH_LANG = Language.CreateFromNameAndIso("Español", Iso.CreateIso(ENGLISH_ISO_CODE));
         public CourseAggregateShould()
         {
             
@@ -27,8 +25,12 @@ namespace Courses.Tests
                     [SPANISH_ISO_CODE]="Español",
                     [ENGLISH_ISO_CODE] = "English"
                 })
+                .WithTranslations(new Dictionary<string, string>
+                {
+                    ["English"] = "Inglés"
+                })
                 .Build();
-            var result = sut.ChooseACourse(SPANISH_RAW_ISO, ENGLISH_RAW_ISO);
+            var result = sut.ChooseACourse(SPANISH_RAW_ISO, ENGLISH_RAW_ISO, 1, Guid.Empty);
             Assert.NotNull(result);
         }
         [Fact]
@@ -41,7 +43,7 @@ namespace Courses.Tests
                     [SPANISH_ISO_CODE] = "Español",
                 })
                 .Build();
-            Assert.Throws<ArgumentException>(()=> sut.ChooseACourse(sameLang, sameLang));
+            Assert.Throws<ArgumentException>(()=> sut.ChooseACourse(sameLang, sameLang, 1, Guid.Empty));
         }
         [Theory]
         [InlineData("x81","es")]
@@ -55,7 +57,7 @@ namespace Courses.Tests
                    [ENGLISH_ISO_CODE] = "English"
                })
                .Build();
-            Assert.Throws<ArgumentException>(() => sut.ChooseACourse(motherLanguage, learningLanguage));
+            Assert.Throws<ArgumentException>(() => sut.ChooseACourse(motherLanguage, learningLanguage, 1, Guid.Empty));
         }
 
         [Fact]
@@ -68,8 +70,12 @@ namespace Courses.Tests
                    [SPANISH_ISO_CODE] = "Español",
                    [ENGLISH_ISO_CODE] = "English"
                })
+               .WithTranslations(new Dictionary<string, string>
+               {
+                   ["English"] = "Inglés"
+               })
                .Build();
-            var result = sut.ChooseACourse(SPANISH_RAW_ISO, ENGLISH_RAW_ISO);
+            var result = sut.ChooseACourse(SPANISH_RAW_ISO, ENGLISH_RAW_ISO, 1, Guid.Empty);
             Assert.Contains(exptected, result.Name);
         }
     }

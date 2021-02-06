@@ -1,12 +1,6 @@
-﻿using EasyLanguageLearning.Domain.Shared.Kernel;
-using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Courses.Domain
+namespace EasyLanguageLearning.Domain.Shared.Kernel.Languages
 {
     public class Iso : ValueObject
     {
@@ -20,7 +14,7 @@ namespace Courses.Domain
             }
             this.IsoCode = iso;
         }
-        
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return (IsoCode);
@@ -28,7 +22,7 @@ namespace Courses.Domain
 
         public static Iso CreateIso(IsoCodes isoCode)
         {
-            string iso = isoCode == IsoCodes.None 
+            string iso = isoCode == IsoCodes.None
                 ? string.Empty
                 : isoCode.ToString();
             return new Iso(iso);

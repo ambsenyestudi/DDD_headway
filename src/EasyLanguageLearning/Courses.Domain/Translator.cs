@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using System.Collections.Generic;
 
 namespace Courses.Domain
 {
