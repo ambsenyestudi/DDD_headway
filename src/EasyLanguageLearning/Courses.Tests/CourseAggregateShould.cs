@@ -35,12 +35,23 @@ namespace Courses.Tests
         [Theory]
         [InlineData("x81","es")]
         [InlineData("es", "x81")]
-        public void HaveValidIsoCodes(string motherLanguage, string learningLanguage)
+        public void NotGetCourseWhenInvalidIsoCodes(string motherLanguage, string learningLanguage)
         {
             var sut = new CourseAgregateBuilder()
                .WithLanguagesInCatalog(SPANISH_ISO_CODE, SPANISH_ISO_CODE)
                .Build();
             Assert.Throws<ArgumentException>(() => sut.ChooseACourse(motherLanguage, learningLanguage));
+        }
+
+        [Fact]
+        public void GetCourseNameInMotherLangauge()
+        {
+            var exptected = "Inglés";
+            var sut = new CourseAgregateBuilder()
+               .WithLanguagesInCatalog(SPANISH_ISO_CODE, SPANISH_ISO_CODE)
+               .Build();
+            var result = sut.ChooseACourse(SPANISH_LANG, ENGLISH_LANG);
+            Assert.Contains(exptected, result.Name);
         }
     }
 }

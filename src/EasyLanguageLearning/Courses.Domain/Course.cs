@@ -8,9 +8,11 @@ namespace Courses.Domain
 {
     public class Course
     {
+        public string Name { get; }
         public Course(Iso motherLanguagIso, Iso learningLanguageIso)
         {
 
         }
+
     }
 }
