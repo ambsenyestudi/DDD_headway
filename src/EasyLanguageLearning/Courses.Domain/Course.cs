@@ -10,35 +10,33 @@ namespace Courses.Domain
 {
     public class Course
     {
-
-        private const int MIN_LEVEL = 1;
-        private const int MAX_LEVEL = 3;
-        private const string LOW_LEVEL_ERROR = "level cannot be lower than";
-        private const string HIGH_LEVEL_ERROR = "level cannot be higher than";
         private const string INVALID_UNIT_ERROR = "suplied unit does not belong to current coures";
-        public string Name { get; protected set; }
+
         public Guid Id { get; protected set; }
+                
+        public string Name { get; protected set; }
+        
         public Language MotherLanguage { get; protected set; }
         public Language LearningLanguage { get; protected set; }
         private IEnumerable<Unit> unitCollection;
-        public List<Unit> UnitList { get => unitCollection.ToList(); }
 
-            
-        public Course(Guid id, Language motherLanguae, Language learningLanguage)
+        public List<Unit> UnitList { get => unitCollection.ToList(); }
+    
+        internal Course(Guid id, Language motherLanguae, Language learningLanguage)
         {
             Id = id;
             MotherLanguage = motherLanguae;
             LearningLanguage = learningLanguage;;
         }
-        public void SetName(int level, ITranslationLookUp translation)
+
+        internal void SetName(int level, ITranslationLookUp translation)
         {
-            EnsureLevelInRange(level);
             var translatedName = translation
                 .Translate(LearningLanguage.Iso, MotherLanguage.Iso, LearningLanguage.Name);
             Name = $"{translatedName} {level}";
         }
 
-        public void LoadUnitContent(Guid unitId, List<Translation> content)
+        internal void LoadUnitContent(Guid unitId, List<Translation> content)
         {
             if(!unitCollection.Any(u=>u.Id == unitId))
             {
@@ -57,31 +55,19 @@ namespace Courses.Domain
             return new WrittingExercise(UnitList.First().Content.First());
         }
 
-        private void EnsureValidCourseContent(List<Translation> content)
-        {
-            if(content.Any(c=>c.From != MotherLanguage.Iso)||content.Any(c=>c.To != LearningLanguage.Iso))
-            {
-                throw new InvalidUnitContentException(InvalidUnitContentException.INVALID_CONTENT_LANGUAGE_ERROR);
-            }
-        }
+        
 
-        public void LoadUnits(IEnumerable<Unit> unitCollection)
+        internal void LoadUnits(IEnumerable<Unit> unitCollection)
         {
             this.unitCollection = unitCollection;
         }
 
-        private void EnsureLevelInRange(int level)
+        private void EnsureValidCourseContent(List<Translation> content)
         {
-            if (level < MIN_LEVEL)
+            if (content.Any(c => c.From != MotherLanguage.Iso) || content.Any(c => c.To != LearningLanguage.Iso))
             {
-                throw new ArgumentException($"{LOW_LEVEL_ERROR} {MIN_LEVEL}");
-            }
-            if(level > MAX_LEVEL)
-            {
-                throw new ArgumentException($"{HIGH_LEVEL_ERROR} {MAX_LEVEL}");
+                throw new InvalidUnitContentException(InvalidUnitContentException.INVALID_CONTENT_LANGUAGE_ERROR);
             }
         }
-
-        
     }
 }

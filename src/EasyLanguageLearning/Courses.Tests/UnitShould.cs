@@ -1,6 +1,7 @@
-﻿using Courses.Domain.Exceptions;
+﻿using Courses.Domain;
+using Courses.Domain.Exceptions;
 using Courses.Domain.Translations;
-using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using Courses.Tests.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,30 +12,26 @@ namespace Courses.Tests
 {
     public class UnitShould
     {
-        
-        
-
         [Fact]
         public void NotHaveRepeatedContent()
         {
-            var root = new CourseAgregateBuilder()
-                .WithLanguagesInCatalog(new Dictionary<IsoCodes, string>
-                {
-                    [TC.SPANISH_ISO_CODE] = "Español",
-                    [TC.ENGLISH_ISO_CODE] = "English"
-                })
-                .WithTranslations(new Dictionary<string, string>
-                {
-                    ["English"] = "Inglés"
-                })
-                .WithUnits(new Dictionary<Guid, string> { [TC.COMIENZO_UNIT_ID]= TC.COMIENZO_UNIT_NAME })
-                .Build();
-            var course = root.ChooseACourse(TC.SPANISH_RAW_ISO, TC.ENGLISH_RAW_ISO, 1, Guid.Empty);
             var repeatdTranslationList = new List<Translation>
-            { 
+            {
                 Translation.Create(TC.SPANISH_ISO, TC.ENGLISH_ISO, "Si","Yes"),
                 Translation.Create(TC.SPANISH_ISO, TC.ENGLISH_ISO, "Si","Yes"),
             };
+            var definition = new CourseDefinition(TC.SPANISH_RAW_ISO, TC.ENGLISH_RAW_ISO, 1);
+            var root = new CourseAgregateBuilder()
+            .CreateSpanishEnglishCourse(new Dictionary<string, string>
+                {
+                    ["English"] = "Inglés"
+                }, new Dictionary<Guid, string> 
+                { 
+                    [TC.COMIENZO_UNIT_ID] = TC.COMIENZO_UNIT_NAME 
+                });
+
+            var course = root.ChooseACourse(definition, Guid.Empty);
+
             Assert.Throws<RepeatedUnitContentException>(() => root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, repeatdTranslationList));
         }
         [Fact]
@@ -46,21 +43,21 @@ namespace Courses.Tests
                 Translation.Create(TC.SPANISH_ISO, TC.ENGLISH_ISO, "No","No"),
             };
             var exptectedTranslationCount = translationList.Count;
+
+            var definition = new CourseDefinition(TC.SPANISH_RAW_ISO, TC.ENGLISH_RAW_ISO, 1);
+            
             var root = new CourseAgregateBuilder()
-                .WithLanguagesInCatalog(new Dictionary<IsoCodes, string>
-                {
-                    [TC.SPANISH_ISO_CODE] = "Español",
-                    [TC.ENGLISH_ISO_CODE] = "English"
-                })
-                .WithTranslations(new Dictionary<string, string>
+                .CreateSpanishEnglishCourse(new Dictionary<string, string>
                 {
                     ["English"] = "Inglés"
-                })
-                .WithUnits(new Dictionary<Guid, string> { [TC.COMIENZO_UNIT_ID] = TC.COMIENZO_UNIT_NAME })
-                .Build();
-            var course = root.ChooseACourse(TC.SPANISH_RAW_ISO, TC.ENGLISH_RAW_ISO, 1, Guid.Empty);
+                }, new Dictionary<Guid, string> { 
+                    [TC.COMIENZO_UNIT_ID] = TC.COMIENZO_UNIT_NAME 
+                });
+
+            var course = root.ChooseACourse(definition, Guid.Empty);
             root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, translationList);
             var actualCount = course.UnitList.First().Content.Count;
+
             Assert.Equal(exptectedTranslationCount, actualCount);
         }
 
@@ -72,20 +69,18 @@ namespace Courses.Tests
                 Translation.Create(TC.SPANISH_ISO, TC.FRENCH_ISO, "Si","Oui"),
                 Translation.Create(TC.FRENCH_ISO, TC.ENGLISH_ISO, "Non","No"),
             };
+
+            var definition = new CourseDefinition(TC.SPANISH_RAW_ISO, TC.ENGLISH_RAW_ISO, 1);
+
             var root = new CourseAgregateBuilder()
-                .WithLanguagesInCatalog(new Dictionary<IsoCodes, string>
-                {
-                    [TC.SPANISH_ISO_CODE] = "Español",
-                    [TC.ENGLISH_ISO_CODE] = "English",
-                    [IsoCodes.fr] = "Francais"
-                })
-                .WithTranslations(new Dictionary<string, string>
+                .CreateSpanishEnglishCourse(new Dictionary<string, string>
                 {
                     ["English"] = "Inglés"
-                })
-                .WithUnits(new Dictionary<Guid, string> { [TC.COMIENZO_UNIT_ID] = TC.COMIENZO_UNIT_NAME })
-                .Build();
-            var course = root.ChooseACourse(TC.SPANISH_RAW_ISO, TC.ENGLISH_RAW_ISO, 1, Guid.Empty);
+                }, new Dictionary<Guid, string> { 
+                    [TC.COMIENZO_UNIT_ID] = TC.COMIENZO_UNIT_NAME 
+                });
+
+            var course = root.ChooseACourse(definition, Guid.Empty);
 
             Assert.Throws<InvalidUnitContentException>(() => root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, translationList));
         }

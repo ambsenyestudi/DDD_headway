@@ -20,6 +20,9 @@ namespace EasyLanguageLearning.Domain.Shared.Kernel.Languages
             yield return (IsoCode);
         }
 
+        public override string ToString() =>
+            IsoCode;
+
         public static Iso CreateIso(IsoCodes isoCode)
         {
             string iso = isoCode == IsoCodes.None

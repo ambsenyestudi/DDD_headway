@@ -1,64 +1,29 @@
 ﻿using Courses.Domain;
-using Courses.Domain.Languages;
-using Courses.Domain.Translations;
-using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
-using Moq;
+using Courses.Tests.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
+using TC = Courses.Tests.AggregateTestConstants;
 
 namespace Courses.Tests
 {
     public class CourseShould
     {
-        [Theory]
-        [InlineData(0)]
-        [InlineData(4)]
-        public void NotGetCourseWhenLevelNotInRange1_3(int level)
-        {
-            var motherLang = Language.CreateFromNameAndIso("Español", Iso.CreateIso(IsoCodes.es));
-            var learnLang = Language.CreateFromNameAndIso("English", Iso.CreateIso(IsoCodes.en));
-            var sut = new Course(Guid.Empty, motherLang, learnLang);
-            var translationLookUpMock = new Mock<ITranslationLookUp>();
-            translationLookUpMock
-                .Setup(x => x.Translate(It.IsAny<Iso>(), It.IsAny<Iso>(), It.IsAny<string>()))
-                .Returns(string.Empty);
-            Assert.Throws<ArgumentException>(() => sut.SetName(level, translationLookUpMock.Object));
-        }
 
-        [Theory]
-        [InlineData(1)]
-        [InlineData(3)]
-        public void GetCouresContainingLevelInName(int level)
-        {
-            
-            var exptectedLevel = level.ToString();
-            var motherLang = Language.CreateFromNameAndIso("Español", Iso.CreateIso(IsoCodes.es));
-            var learnLang = Language.CreateFromNameAndIso("English", Iso.CreateIso(IsoCodes.en));
-            var sut = new Course(Guid.Empty, motherLang, learnLang);
-            var translationLookUpMock = new Mock<ITranslationLookUp>();
-            translationLookUpMock
-                .Setup(x => x.Translate(It.IsAny<Iso>(), It.IsAny<Iso>(), It.IsAny<string>()))
-                .Returns(string.Empty);
-
-            sut.SetName(level, translationLookUpMock.Object);
-            Assert.Contains(exptectedLevel, sut.Name);
-        }
         [Fact]
         public void LoadUnits()
         {
             var unitGuid = Guid.NewGuid();
-            var level = 1;
-            var motherLang = Language.CreateFromNameAndIso("Español", Iso.CreateIso(IsoCodes.es));
-            var learnLang = Language.CreateFromNameAndIso("English", Iso.CreateIso(IsoCodes.en));
-            var sut = new Course(Guid.Empty, motherLang, learnLang);
-            var translationLookUpMock = new Mock<ITranslationLookUp>();
-            translationLookUpMock
-                .Setup(x => x.Translate(It.IsAny<Iso>(), It.IsAny<Iso>(), It.IsAny<string>()))
-                .Returns(string.Empty);
-            sut.SetName(level, translationLookUpMock.Object);
-            sut.LoadUnits(new List<Unit> { new Unit(unitGuid, "Comienzo") });
+            var definition = new CourseDefinition(TC.SPANISH_RAW_ISO, TC.ENGLISH_RAW_ISO, 1);
+            var root = new CourseAgregateBuilder()
+                .CreateSpanishEnglishCourse(new Dictionary<string, string>
+                {
+                    ["English"] = "Inglés"
+                }, new Dictionary<Guid, string> 
+                {
+                    [unitGuid] = "Comienzo"
+                });
+            var sut = root.ChooseACourse(definition, unitGuid);
             Assert.NotEmpty(sut.UnitList);
         }
     }
