@@ -20,10 +20,26 @@ namespace Courses.Domain
         }
         
 
-        public void LoadContent(List<Translation> contentList)
+        internal void LoadContent(List<Translation> contentList)
         {
             EnsureNotRepeatedContent(contentList);
             content = contentList;
+        }
+        internal List<Translation> GetRandomContent(int max, bool isFixedRandom = false)
+        {
+            var randomContentList = new List<Translation>();
+            var unitContent = Content;
+            var random = new Random();
+            for (int i = 0; i < max; i++)
+            {
+                var randomIndex = isFixedRandom
+                    ? 0
+                    :random.Next(0, unitContent.Count - 1);
+
+                randomContentList.Add(unitContent[randomIndex]);
+                unitContent.RemoveAt(randomIndex);
+            }
+            return randomContentList;
         }
 
         private void EnsureNotRepeatedContent(List<Translation> contentList)

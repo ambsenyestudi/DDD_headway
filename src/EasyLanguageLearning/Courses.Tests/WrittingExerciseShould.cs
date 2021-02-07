@@ -35,7 +35,7 @@ namespace Courses.Tests
                 
             var course = root.ChooseACourse(definition, Guid.Empty);
             root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, translationList);
-            var writtenExercise = root.GetWrittingExercise(course);
+            var writtenExercise = root.CreateWrittingExercise(course);
             var result = writtenExercise.Evaluate(answer);
             Assert.Equal(expectedResult, result.Results);
         }
@@ -65,7 +65,7 @@ namespace Courses.Tests
 
             var course = root.ChooseACourse(definition, Guid.Empty);
             root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, translationList);
-            var writtenExercise = root.GetWrittingExercise(course);
+            var writtenExercise = root.CreateWrittingExercise(course);
             var result = writtenExercise.Evaluate(partialAnswer);
             Assert.Equal(expectedResult, result.Results);
         }
@@ -94,7 +94,7 @@ namespace Courses.Tests
 
             var course = root.ChooseACourse(definition, Guid.Empty);
             root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, translationList);
-            var writtenExercise = root.GetWrittingExercise(course);
+            var writtenExercise = root.CreateWrittingExercise(course);
             var result = writtenExercise.Evaluate(wrongAnswer);
             Assert.Equal(expectedResult, result.Results);
         }
@@ -120,7 +120,7 @@ namespace Courses.Tests
 
             var course = root.ChooseACourse(definition, Guid.Empty);
             root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, translationList);
-            var writtenExercise = root.GetWrittingExercise(course);
+            var writtenExercise = root.CreateWrittingExercise(course);
             var result = writtenExercise.GetTip(currAnswer);
 
             Assert.Equal(expectedTip, result);

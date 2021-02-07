@@ -37,11 +37,23 @@ namespace Courses.Domain
             return course;
         }
 
-        public WrittingExercise GetWrittingExercise(Course course) =>
-            course.GetWrittingExercise();
+        /// <summary>
+        /// Factory method for writting exercises
+        /// </summary>
+        /// <param name="course">source of the content to be teste</param>
+        /// <param name="isFixedRandom">optional for unit test radom purposes</param>
+        /// <returns>WrittingExercise</returns>
+        public WrittingExercise CreateWrittingExercise(Course course, bool isFixedRandom = false) =>
+            course.CreateWrittingExercise(isFixedRandom);
 
-        public MultipleChoiceExercise GetMultipleChoiceExercise(Course course) =>
-            course.GetMultipleChoiceExercise();
+        /// <summary>
+        /// Factory method for multiple choice exercises
+        /// </summary>
+        /// <param name="course">source of the content to be teste</param>
+        /// <param name="isFixedRandom">optional for unit test radom purposes</param>
+        /// <returns>MultipleChoiceExercise</returns>
+        public MultipleChoiceExercise GetMultipleChoiceExercise(Course course, bool isFixedRandom = false) =>
+            course.CreateMultipleChoiceExercise(isFixedRandom);
 
         public Course LoadUnitContent(Course course, Guid unitId, List<Translation> content)
         {
@@ -55,7 +67,7 @@ namespace Courses.Domain
             if (!languageLookUp.CatalogContains(motherIso) ||
                 !languageLookUp.CatalogContains(lanaguagIso))
             {
-                throw new ArgumentException(DuplicatedLanguageError);
+                throw new ArgumentException(LanguageNotInCatalogError);
             }
         }
         

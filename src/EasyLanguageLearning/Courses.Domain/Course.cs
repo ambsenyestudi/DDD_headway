@@ -50,16 +50,32 @@ namespace Courses.Domain
 
         }
 
-        internal MultipleChoiceExercise GetMultipleChoiceExercise()
+        //rules to ensure enoug content on unit? 
+        internal MultipleChoiceExercise CreateMultipleChoiceExercise(bool isFixedRandom = false)
         {
-            throw new NotImplementedException();
+            var randomUnit = isFixedRandom
+                ? UnitList.First()
+                : GetRandomUnit();
+            var randomChoices = randomUnit.GetRandomContent(MultipleChoiceExercise.CHOICE_COUNT, isFixedRandom);
+            var randomIndex = isFixedRandom
+                ? 0
+                :new Random().Next(0, MultipleChoiceExercise.CHOICE_COUNT - 1);
+            return new MultipleChoiceExercise(randomIndex, randomChoices);
         }
 
-        internal WrittingExercise GetWrittingExercise()
+        
+        //rules to ensure enoug content on unit?
+        internal WrittingExercise CreateWrittingExercise(bool isFixedRandom = false)
         {
-            return new WrittingExercise(UnitList.First().Content.First());
+            var randomUnit = isFixedRandom
+                ? UnitList.First()
+                :GetRandomUnit();
+            var randomContent = randomUnit
+                .GetRandomContent(1, isFixedRandom)
+                .First();
+            return new WrittingExercise(randomContent);
         }
-
+       
         
 
         internal void LoadUnits(IEnumerable<Unit> unitCollection)
@@ -74,5 +90,12 @@ namespace Courses.Domain
                 throw new InvalidUnitContentException(InvalidUnitContentException.INVALID_CONTENT_LANGUAGE_ERROR);
             }
         }
+
+        private Unit GetRandomUnit()
+        {
+            var randomIndex = new Random().Next(0, UnitList.Count - 1);
+            return UnitList[randomIndex];
+        }
+
     }
 }

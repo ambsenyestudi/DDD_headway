@@ -4,9 +4,6 @@ using Courses.Domain.Translations;
 using Courses.Tests.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using TC = Courses.Tests.AggregateTestConstants;
 
@@ -14,11 +11,13 @@ namespace Courses.Tests
 {
     public class MultipleChoiceTest
     {
-        [Fact]
-        public void TellWhenAnswerIsRight()
+        [Theory]
+        [InlineData(1,"Right")]
+        [InlineData(2, "Wrong")]
+        public void TelWhetherAnswerIsRightOrWrong(int answerIndex, string exptectedResultRaw)
         {
-            var expectedResult = TestResults.Right;
-
+            var expectedResult = Enum.Parse<TestResults>(exptectedResultRaw);
+            
             var translationList = new List<Translation>
             {
                 Translation.Create(TC.SPANISH_ISO, TC.ENGLISH_ISO, "Si", "Yes"),
@@ -38,7 +37,13 @@ namespace Courses.Tests
             var course = root.ChooseACourse(definition, Guid.Empty);
             root.LoadUnitContent(course, TC.COMIENZO_UNIT_ID, translationList);
             
-            var multiplChoiceExercise = root.GetMultipleChoiceExercise(course);
+            var sut = root.GetMultipleChoiceExercise(course, isFixedRandom: true);
+            var result = sut.Evaluate(answerIndex);
+            Assert.Equal(expectedResult, result.Results);
         }
+
+        //todo rever translation testing
+
+        
     }
 }
