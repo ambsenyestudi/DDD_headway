@@ -1,4 +1,5 @@
-﻿using Courses.Domain.Languages;
+﻿using Courses.Domain.Exercises;
+using Courses.Domain.Languages;
 using Courses.Domain.Translations;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System;
@@ -35,7 +36,12 @@ namespace Courses.Domain
 
             return course;
         }
-        
+
+        public WrittingExercise GetExercise(Course course)
+        {
+            return course.GetExercise();
+        }
+
         public Course LoadUnitContent(Course course, Guid unitId, List<Translation> content)
         {
             

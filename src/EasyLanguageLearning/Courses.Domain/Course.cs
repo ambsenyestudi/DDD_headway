@@ -1,4 +1,5 @@
 ﻿using Courses.Domain.Exceptions;
+using Courses.Domain.Exercises;
 using Courses.Domain.Languages;
 using Courses.Domain.Translations;
 using System;
@@ -49,6 +50,11 @@ namespace Courses.Domain
             currUnit.LoadContent(content);
             unitCollection = unitList;
 
+        }
+
+        internal WrittingExercise GetExercise()
+        {
+            return new WrittingExercise(UnitList.First().Content.First());
         }
 
         private void EnsureValidCourseContent(List<Translation> content)
