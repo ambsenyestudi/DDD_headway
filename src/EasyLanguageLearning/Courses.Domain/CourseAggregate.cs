@@ -37,10 +37,11 @@ namespace Courses.Domain
             return course;
         }
 
-        public WrittingExercise GetExercise(Course course)
-        {
-            return course.GetExercise();
-        }
+        public WrittingExercise GetWrittingExercise(Course course) =>
+            course.GetWrittingExercise();
+
+        public MultipleChoiceExercise GetMultipleChoiceExercise(Course course) =>
+            course.GetMultipleChoiceExercise();
 
         public Course LoadUnitContent(Course course, Guid unitId, List<Translation> content)
         {
@@ -48,8 +49,6 @@ namespace Courses.Domain
             course.LoadUnitContent(unitId, content);
             return course;
         }
-
-        
 
         private void EnsureLanguagesInCatalog(Iso motherIso, Iso lanaguagIso)
         {

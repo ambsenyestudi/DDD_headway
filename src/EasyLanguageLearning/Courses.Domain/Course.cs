@@ -50,7 +50,12 @@ namespace Courses.Domain
 
         }
 
-        internal WrittingExercise GetExercise()
+        internal MultipleChoiceExercise GetMultipleChoiceExercise()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal WrittingExercise GetWrittingExercise()
         {
             return new WrittingExercise(UnitList.First().Content.First());
         }

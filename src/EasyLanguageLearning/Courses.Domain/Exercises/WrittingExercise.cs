@@ -6,14 +6,13 @@ namespace Courses.Domain.Exercises
     public class WrittingExercise
     {
         public string Heading { get; }
-
-        private string Answer { get; }
+        private string TestAnswer { get; }
         public WrittingExercise(Translation translation, bool isReverse = false)
         {
             Heading = isReverse
                 ? translation.TranslatedTerm
                 : translation.OriginalTerm;
-            Answer = isReverse
+            TestAnswer = isReverse
                 ? translation.OriginalTerm
                 : translation.TranslatedTerm;
         }
@@ -21,17 +20,17 @@ namespace Courses.Domain.Exercises
 
         public ExerciseResult Evaluate(string writtenAnswer)
         {
-            if (writtenAnswer == Answer)
+            if (writtenAnswer == TestAnswer)
             {
-                return ExerciseResult.CreateRightAnswer(Answer);
+                return ExerciseResult.CreateRightAnswer(TestAnswer);
             }
 
-            var accuracyPercentage = FigureAccuracyPercentage(writtenAnswer, Answer);
+            var accuracyPercentage = FigureAccuracyPercentage(writtenAnswer, TestAnswer);
             if (accuracyPercentage < 0.5f)
             {
-                return ExerciseResult.CreateWrongAnswer(Answer);
+                return ExerciseResult.CreateWrongAnswer(TestAnswer);
             }
-            return ExerciseResult.CreateAlmosCorrectAnswer(Answer);
+            return ExerciseResult.CreateAlmosCorrectAnswer(TestAnswer);
         }
 
         public string GetTip(string partialAnswer)
@@ -39,12 +38,12 @@ namespace Courses.Domain.Exercises
             var tipIndex = 0;
             var count = 0;
             bool isDiscrepancy = false;
-            while (!isDiscrepancy && count < Answer.Length)
+            while (!isDiscrepancy && count < TestAnswer.Length)
             {
                 if (count < partialAnswer.Length)
                 {
                     var nextAnswer = partialAnswer[count];
-                    var nextCorrect = Answer[count];
+                    var nextCorrect = TestAnswer[count];
                     isDiscrepancy = nextAnswer != nextCorrect;
                     if (isDiscrepancy)
                     {
@@ -59,7 +58,7 @@ namespace Courses.Domain.Exercises
                 }
             }
 
-            return Answer[tipIndex].ToString();
+            return TestAnswer.Substring(0, tipIndex + 1);
 
         }
 
