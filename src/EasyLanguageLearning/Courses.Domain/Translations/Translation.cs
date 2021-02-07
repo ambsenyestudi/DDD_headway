@@ -26,13 +26,12 @@ namespace Courses.Domain.Translations
         public static Translation Create(Iso from, Iso to, string originalTerm, ITranslationLookUp translationLookUp)
         {
             var translation = translationLookUp.Translate(from, to, originalTerm);
-            if(string.IsNullOrWhiteSpace(translation))
-            {
-                return Translation.Empty;
-            }
-            return new Translation(from, to, originalTerm, translation);
+            return Create(from, to, originalTerm, translation);
         }
-
+        public static Translation Create(Iso from, Iso to, string originalTerm, string translatedTerm) =>
+            IsValidTranslation(from, to, originalTerm, translatedTerm)
+            ? new Translation(from, to, originalTerm, translatedTerm)
+            : Translation.Empty;
         protected override IEnumerable<object> GetEqualityComponents() =>
             new object[]
             {
@@ -41,5 +40,13 @@ namespace Courses.Domain.Translations
                 OriginalTerm,
                 TranslatedTerm
             };
+
+        private static bool IsValidTranslation(Iso from, Iso to, string originalTerm, string translatedTerm) =>
+            from != Iso.Empty &&
+            to != Iso.Empty &&
+            !string.IsNullOrWhiteSpace(originalTerm) &&
+            !string.IsNullOrWhiteSpace(translatedTerm);
+
+
     }
 }

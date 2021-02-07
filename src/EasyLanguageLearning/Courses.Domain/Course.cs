@@ -1,4 +1,5 @@
-﻿using Courses.Domain.Languages;
+﻿using Courses.Domain.Exceptions;
+using Courses.Domain.Languages;
 using Courses.Domain.Translations;
 using System;
 using System.Collections.Generic;
@@ -42,11 +43,20 @@ namespace Courses.Domain
             {
                 throw new ArgumentException(INVALID_UNIT_ERROR);
             }
+            EnsureValidCourseContent(content);
             var unitList = UnitList;
             var currUnit = unitList.First(u => u.Id == unitId);
             currUnit.LoadContent(content);
             unitCollection = unitList;
 
+        }
+
+        private void EnsureValidCourseContent(List<Translation> content)
+        {
+            if(content.Any(c=>c.From != MotherLanguage.Iso)||content.Any(c=>c.To != LearningLanguage.Iso))
+            {
+                throw new InvalidUnitContentException(InvalidUnitContentException.INVALID_CONTENT_LANGUAGE_ERROR);
+            }
         }
 
         public void LoadUnits(IEnumerable<Unit> unitCollection)

@@ -38,13 +38,15 @@ namespace Courses.Domain
         
         public Course LoadUnitContent(Course course, Guid unitId, List<Translation> content)
         {
+            
             course.LoadUnitContent(unitId, content);
             return course;
         }
 
+
         private IsoCodes ParseIsoCode(string isoCodeRaw)
         {
-            if(Enum.TryParse<IsoCodes>(isoCodeRaw, out IsoCodes parsedIso))
+            if(Enum.TryParse(isoCodeRaw, out IsoCodes parsedIso))
             {
                 return parsedIso;
             }

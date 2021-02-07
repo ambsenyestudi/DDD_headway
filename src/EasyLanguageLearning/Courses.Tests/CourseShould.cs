@@ -59,10 +59,6 @@ namespace Courses.Tests
                 .Returns(string.Empty);
             sut.SetName(level, translationLookUpMock.Object);
             sut.LoadUnits(new List<Unit> { new Unit(unitGuid, "Comienzo") });
-            sut.LoadUnitContent(unitGuid, new List<Translation>() 
-            { 
-                Translation.Empty
-            });
             Assert.NotEmpty(sut.UnitList);
         }
     }

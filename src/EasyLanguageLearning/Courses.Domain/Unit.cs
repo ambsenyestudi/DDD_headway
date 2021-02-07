@@ -1,4 +1,5 @@
-﻿using Courses.Domain.Translations;
+﻿using Courses.Domain.Exceptions;
+using Courses.Domain.Translations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,17 @@ namespace Courses.Domain
 
         public void LoadContent(List<Translation> contentList)
         {
+            EnsureNotRepeatedContent(contentList);
             content = contentList;
         }
 
-        
+        private void EnsureNotRepeatedContent(List<Translation> contentList)
+        {
+            int dupes = contentList.Count() - contentList.GroupBy(x=>x).Count();
+            if (dupes > 0)
+            {
+                throw new RepeatedUnitContentException(RepeatedUnitContentException.REPEATED_CONTENT_ERROR);
+            }
+        }
     }
 }

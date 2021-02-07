@@ -12,8 +12,16 @@ namespace Courses.Tests
     public class CourseAgregateBuilder
     {
         private List<Language> languageList;
-        private Dictionary<string, string> translationDictionary;
+        private Dictionary<string, string> translationDictionary = new Dictionary<string, string>();
+        private List<Unit> unitList = new List<Unit>();
 
+        private readonly Mock<IUnitLookUp> unitLookUpMock = new Mock<IUnitLookUp>();
+        private readonly Mock<ILanguageLookUp> languageLookupMock = new Mock<ILanguageLookUp>();
+        private readonly Mock<ITranslationLookUp> translationLookupMock = new Mock<ITranslationLookUp>();
+        public CourseAgregateBuilder()
+        {
+
+        }
         public CourseAgregateBuilder WithLanguagesInCatalog(Dictionary<IsoCodes,string> languagesDictionary)
         {
             languageList = languagesDictionary
@@ -26,23 +34,30 @@ namespace Courses.Tests
             this.translationDictionary = translationDictionary;
             return this;
         }
+        public CourseAgregateBuilder WithUnits(Dictionary<Guid,string> unitIdNameDictionary)
+        {
+            unitList = unitIdNameDictionary
+                .Select((kv) => new Unit(kv.Key, kv.Value))
+                .ToList();
+            return this;
+        }
         public CourseAggregate Build()
         {
-            var languageLookupMock = new Mock<ILanguageLookUp>();
+            
             languageLookupMock
                 .Setup(x => x.GetLanguage(It.IsAny<Iso>()))
                 .Returns((Iso iso) => CreateLangauge(iso, languageList));
             languageLookupMock
                 .Setup(x => x.CatalogContains(It.IsAny<Iso>()))
                 .Returns((Iso iso) => languageList.Any(l => l.Iso == iso));
-            var translationLookupMock = new Mock<ITranslationLookUp>();
+            
             translationLookupMock
                 .Setup(t => t.Translate(It.IsAny<Iso>(), It.IsAny<Iso>(), It.IsAny<string>()))
                 .Returns((Iso from, Iso to, string term) => translationDictionary[term]);
-            var unitLookUp = new Mock<IUnitLookUp>();
-            unitLookUp.Setup(ul => ul.GetUnits(It.IsAny<Guid>()))
-                .Returns(new List<Unit>());
-            return new CourseAggregate(languageLookupMock.Object, translationLookupMock.Object, unitLookUp.Object);
+
+            unitLookUpMock.Setup(ul => ul.GetUnits(It.IsAny<Guid>()))
+                .Returns(unitList);
+            return new CourseAggregate(languageLookupMock.Object, translationLookupMock.Object, unitLookUpMock.Object);
         }
 
         private Language CreateLangauge(Iso iso, List<Language> languageList)
