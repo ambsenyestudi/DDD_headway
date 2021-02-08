@@ -2,15 +2,16 @@
 
 namespace Exercises.Domain
 {
-    public class Exercises
+    public class Exercise
     {
         public string Heading { get; }
         public UnitContentItem RightSolution{ get; }
-        public Exercises(string heading, UnitContentItem rightSolution)
+        public Exercise(string heading, UnitContentItem rightSolution)
         {
             Heading = heading;
+            RightSolution = rightSolution;
         }
-
+        
 
     }
 }

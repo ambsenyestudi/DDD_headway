@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyLanguageLearning.Domain
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{0C943FD4-73D6-488B-B8E7-77C527F0D8A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercises.Test", "Exercises.Test\Exercises.Test.csproj", "{8595B86F-9402-4D30-A30C-D1A17FBA1735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exercises.Test", "Exercises.Test\Exercises.Test.csproj", "{8595B86F-9402-4D30-A30C-D1A17FBA1735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exercises.Domain", "Exercises.Domain\Exercises.Domain.csproj", "{22BD9D7B-4E59-469D-8C10-26DAB4C961AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exercises.Domain", "Exercises.Domain\Exercises.Domain.csproj", "{22BD9D7B-4E59-469D-8C10-26DAB4C961AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +46,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{4D31EE8A-261B-48C0-B423-1E8511C0C8F6} = {0C943FD4-73D6-488B-B8E7-77C527F0D8A5}
 		{8595B86F-9402-4D30-A30C-D1A17FBA1735} = {0C943FD4-73D6-488B-B8E7-77C527F0D8A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

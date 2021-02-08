@@ -1,5 +1,4 @@
 ﻿using Courses.Domain.Exceptions;
-using Courses.Domain.Exercises;
 using Courses.Domain.Languages;
 using Courses.Domain.Translations;
 using System;
@@ -49,34 +48,7 @@ namespace Courses.Domain
             unitCollection = unitList;
 
         }
-
-        //rules to ensure enoug content on unit? 
-        internal MultipleChoiceExercise CreateMultipleChoiceExercise(bool isFixedRandom = false)
-        {
-            var randomUnit = isFixedRandom
-                ? UnitList.First()
-                : GetRandomUnit();
-            var randomChoices = randomUnit.GetRandomContent(MultipleChoiceExercise.CHOICE_COUNT, isFixedRandom);
-            var randomIndex = isFixedRandom
-                ? 0
-                :new Random().Next(0, MultipleChoiceExercise.CHOICE_COUNT - 1);
-            return new MultipleChoiceExercise(randomIndex, randomChoices);
-        }
-
-        
-        //rules to ensure enoug content on unit?
-        internal WrittingExercise CreateWrittingExercise(bool isFixedRandom = false)
-        {
-            var randomUnit = isFixedRandom
-                ? UnitList.First()
-                :GetRandomUnit();
-            var randomContent = randomUnit
-                .GetRandomContent(1, isFixedRandom)
-                .First();
-            return new WrittingExercise(randomContent);
-        }
-       
-        
+                        
 
         internal void LoadUnits(IEnumerable<Unit> unitCollection)
         {

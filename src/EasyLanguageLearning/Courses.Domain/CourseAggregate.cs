@@ -1,7 +1,4 @@
-﻿
-
-using Courses.Domain.Exercises;
-using Courses.Domain.Languages;
+﻿using Courses.Domain.Languages;
 using Courses.Domain.Translations;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System;
@@ -37,23 +34,6 @@ namespace Courses.Domain
             return course;
         }
 
-        /// <summary>
-        /// Factory method for writting exercises
-        /// </summary>
-        /// <param name="course">source of the content to be teste</param>
-        /// <param name="isFixedRandom">optional for unit test radom purposes</param>
-        /// <returns>WrittingExercise</returns>
-        public WrittingExercise CreateWrittingExercise(Course course, bool isFixedRandom = false) =>
-            course.CreateWrittingExercise(isFixedRandom);
-
-        /// <summary>
-        /// Factory method for multiple choice exercises
-        /// </summary>
-        /// <param name="course">source of the content to be teste</param>
-        /// <param name="isFixedRandom">optional for unit test radom purposes</param>
-        /// <returns>MultipleChoiceExercise</returns>
-        public MultipleChoiceExercise GetMultipleChoiceExercise(Course course, bool isFixedRandom = false) =>
-            course.CreateMultipleChoiceExercise(isFixedRandom);
 
         public Course LoadUnitContent(Course course, Guid unitId, List<Translation> content)
         {
