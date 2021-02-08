@@ -11,7 +11,7 @@ namespace Courses.Domain
     {
         private const string INVALID_UNIT_ERROR = "suplied unit does not belong to current coures";
 
-        public Guid Id { get; protected set; }
+        public CourseId Id { get; protected set; }
                 
         public string Name { get; protected set; }
         
@@ -21,7 +21,7 @@ namespace Courses.Domain
 
         public List<Unit> UnitList { get => unitCollection.ToList(); }
     
-        internal Course(Guid id, Language motherLanguae, Language learningLanguage)
+        internal Course(CourseId id, Language motherLanguae, Language learningLanguage)
         {
             Id = id;
             MotherLanguage = motherLanguae;

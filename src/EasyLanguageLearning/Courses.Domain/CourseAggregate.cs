@@ -55,7 +55,7 @@ namespace Courses.Domain
         {
             var motherLanguage = languageLookUp.GetLanguage(motherIso);
             var learningLanguage = languageLookUp.GetLanguage(learningIso);
-            return new Course(id, motherLanguage, learningLanguage);
+            return new Course(new CourseId(id), motherLanguage, learningLanguage);
         }
     }
 }
