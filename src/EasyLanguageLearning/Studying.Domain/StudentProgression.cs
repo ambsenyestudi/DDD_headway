@@ -9,9 +9,9 @@ namespace Studying.Domain
     {
         public Student Student { get; }
         public CourseId CurrentCourse { get; private set; }
-        public List<UnitId> UnitList { get; private set; }
         public UnitId CurrentUnit { get; private set; }
-        private List<UnitProgression> UnitProgressionsList { get; } = new List<UnitProgression>();
+        public int CompletionPercentage { get; set; }
+
         public StudentProgression(Student student)
         {
             Student = student;
@@ -19,15 +19,15 @@ namespace Studying.Domain
             CurrentUnit = UnitId.Empty;
         }
 
-        internal void StartCourse(CourseId course, ICouserLookup couserLookup)
+        internal void StartCourse(CourseId course, List<UnitId> units)
         {
             if(CurrentCourse != CourseId.Empty)
             {
                 throw new ArgumentException($"{nameof(course)} already started");
             }
             CurrentCourse = course;
-            UnitList = couserLookup.GetUnits(CurrentCourse);
-            CurrentUnit = UnitList.First();
+            CurrentUnit = units.First();
+            CompletionPercentage = 0;
         }
     }
 }

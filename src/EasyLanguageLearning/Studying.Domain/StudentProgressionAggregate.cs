@@ -1,23 +1,37 @@
 ﻿using Courses.Domain;
+using EasyLanguageLearning.Domain.Shared.Kernel;
+using System;
 
 namespace Studying.Domain
 {
     public class StudentProgressionAggregate
     {
-        private ICouserLookup couserLookup;
+        private ICourseLookup courseLookup;
 
-        public StudentProgressionAggregate(ICouserLookup couserLookup)
+        public StudentProgressionAggregate(ICourseLookup courseLookup)
         {
-            this.couserLookup = couserLookup;
+            this.courseLookup = courseLookup;
         }
-        public StudentProgression CreateProgression(Student student)
+
+        
+
+        public StudentProgression StartLearningPath(Student student, LearningPathDefinition learningPath)
         {
-            return new StudentProgression(student);
+            var studentProgression = CreateProgression(student);
+            return StartLearningPath(learningPath, studentProgression);
         }
-        public StudentProgression StartCourse(StudentProgression progression, CourseId course)
+        public StudentProgression StartLearningPath(LearningPathDefinition learningPath, StudentProgression studentProgression) =>
+            StartCourse(studentProgression, 
+                courseLookup.GetCourse(learningPath));
+        
+        private StudentProgression CreateProgression(Student student) =>
+            new StudentProgression(student);
+
+        private StudentProgression StartCourse(StudentProgression studentProgression, CourseId course)
         {
-            progression.StartCourse(course, couserLookup);
-            return progression;
+            var currentCourseUnits = courseLookup.GetUnits(course);
+            studentProgression.StartCourse(course, currentCourseUnits);
+            return studentProgression;
         }
     }
 }

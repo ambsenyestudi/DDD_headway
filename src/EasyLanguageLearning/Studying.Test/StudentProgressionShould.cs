@@ -1,4 +1,6 @@
 using Courses.Domain;
+using EasyLanguageLearning.Domain.Shared.Kernel;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using Moq;
 using Studying.Domain;
 using System;
@@ -13,9 +15,14 @@ namespace Studying.Test
         CourseId CourseId { get; } = new CourseId(new Guid("0501bd8e-13fa-4669-a7c8-1b894963b712"));
         UnitId FirstUnit { get; } = new UnitId(new Guid("4370c240-b66b-48bc-bb51-63cdde8717c5"));
         List<UnitId> UnitIdList { get; } 
-        
+
+        readonly Student STUDENT_PABLO;
+
+        readonly LearningPathDefinition SPANISH_ENGLISH_LEARNING_PATH = LearningPathDefinition.Create(Iso.CreateIso(IsoCodes.es), Iso.CreateIso(IsoCodes.en));
+
         public StudentProgressionShould()
         {
+            STUDENT_PABLO = new Student(StudentId, "Pablo");
             UnitIdList = new List<UnitId>
             {
                 FirstUnit,
@@ -23,35 +30,57 @@ namespace Studying.Test
                 new UnitId(new Guid("e27be7cd-dc2c-45ef-81e8-4af530023e0a"))
             };
         }
+        [Fact]
+        public void StartLearningPathAtFirstLesson()
+        {
+            var expected = FirstUnit; 
+            var courseLookup = new CourseLookUpBuilder()
+                .WithCourseId(CourseId)
+                .WithUnits(UnitIdList)
+                .Build();
+            var root = new StudentProgressionAggregate(courseLookup);
+            var sut = root.StartLearningPath(STUDENT_PABLO, SPANISH_ENGLISH_LEARNING_PATH);
+            Assert.Equal(expected, sut.CurrentUnit);
+
+        }
         
         [Fact]
         public void StartCourseWithFirstLesson()
         {
             var expected = FirstUnit;
-            var courseLookupMock = new Mock<ICouserLookup>();
-            courseLookupMock
-                .Setup(cl => cl.GetUnits(CourseId))
-                .Returns(UnitIdList);
-            var root = new StudentProgressionAggregate(courseLookupMock.Object);
-            var student = new Student(StudentId, "Pablo");
-            var sut = root.CreateProgression(student);
-            root.StartCourse(sut, CourseId);
+            var courseLookup = new CourseLookUpBuilder()
+                .WithCourseId(CourseId)
+                .WithUnits(UnitIdList)
+                .Build();
+            var root = new StudentProgressionAggregate(courseLookup);
+            var sut = root.StartLearningPath(STUDENT_PABLO, SPANISH_ENGLISH_LEARNING_PATH);
             Assert.Equal(expected, sut.CurrentUnit);
         }
 
         [Fact]
         public void NotRestartCourse()
         {
-            var expected = FirstUnit;
-            var courseLookupMock = new Mock<ICouserLookup>();
-            courseLookupMock
-                .Setup(cl => cl.GetUnits(CourseId))
-                .Returns(UnitIdList);
-            var root = new StudentProgressionAggregate(courseLookupMock.Object);
-            var student = new Student(StudentId, "Pablo");
-            var sut = root.CreateProgression(student);
-            root.StartCourse(sut, CourseId);
-            Assert.Throws<ArgumentException>(() => root.StartCourse(sut, CourseId));
+            var courseLookup = new CourseLookUpBuilder()
+                .WithCourseId(CourseId)
+                .WithUnits(UnitIdList)
+                .Build();
+            var root = new StudentProgressionAggregate(courseLookup);
+            var sut = root.StartLearningPath(STUDENT_PABLO, SPANISH_ENGLISH_LEARNING_PATH);
+            
+            Assert.Throws<ArgumentException>(() => root.StartLearningPath(SPANISH_ENGLISH_LEARNING_PATH, sut));
+        }
+
+        [Fact]
+        public void TellCourseCompletionLevel()
+        {
+            var expected = 0;
+            var courseLookup = new CourseLookUpBuilder()
+                .WithCourseId(CourseId)
+                .WithUnits(UnitIdList)
+                .Build();
+            var root = new StudentProgressionAggregate(courseLookup);
+            var sut = root.StartLearningPath(STUDENT_PABLO, SPANISH_ENGLISH_LEARNING_PATH);
+            Assert.Equal(expected, sut.CompletionPercentage);
         }
     }
 }
