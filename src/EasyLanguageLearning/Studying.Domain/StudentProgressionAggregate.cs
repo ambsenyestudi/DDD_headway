@@ -1,6 +1,8 @@
 ﻿using Courses.Domain;
 using EasyLanguageLearning.Domain.Shared.Kernel;
+using EasyLanguageLearning.Domain.Shared.Kernel.Units;
 using System;
+using System.Collections.Generic;
 
 namespace Studying.Domain
 {
@@ -23,15 +25,20 @@ namespace Studying.Domain
         public StudentProgression StartLearningPath(LearningPathDefinition learningPath, StudentProgression studentProgression) =>
             StartCourse(studentProgression, 
                 courseLookup.GetCourse(learningPath));
-        
+
+        public int GetCompletionPercentage(StudentProgression sut) =>
+            sut.GetCompletionPercentage();
+
         private StudentProgression CreateProgression(Student student) =>
             new StudentProgression(student);
 
         private StudentProgression StartCourse(StudentProgression studentProgression, CourseId course)
         {
             var currentCourseUnits = courseLookup.GetUnits(course);
-            studentProgression.StartCourse(course, currentCourseUnits);
+            //todo get unit items
+            studentProgression.StartCourse(course, currentCourseUnits, new List<UnitContentItemId>());
             return studentProgression;
         }
+
     }
 }

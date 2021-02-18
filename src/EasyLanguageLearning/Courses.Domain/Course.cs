@@ -20,7 +20,6 @@ namespace Courses.Domain
         private IEnumerable<Unit> unitCollection;
 
         public List<Unit> UnitList { get => unitCollection.ToList(); }
-    
         internal Course(CourseId id, Language motherLanguae, Language learningLanguage)
         {
             Id = id;

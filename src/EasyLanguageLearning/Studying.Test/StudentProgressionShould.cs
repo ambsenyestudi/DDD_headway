@@ -80,7 +80,7 @@ namespace Studying.Test
                 .Build();
             var root = new StudentProgressionAggregate(courseLookup);
             var sut = root.StartLearningPath(STUDENT_PABLO, SPANISH_ENGLISH_LEARNING_PATH);
-            Assert.Equal(expected, sut.CompletionPercentage);
+            Assert.Equal(expected, root.GetCompletionPercentage(sut));
         }
     }
 }
