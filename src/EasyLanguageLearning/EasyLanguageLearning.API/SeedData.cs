@@ -1,4 +1,5 @@
-﻿using EasyLanguageLearning.Infrastructure;
+﻿using EasyLanguageLearning.Domain.ContentSupplying;
+using EasyLanguageLearning.Infrastructure;
 using EasyLanguageLearning.Infrastructure.ContentSupplying;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,19 +60,28 @@ namespace EasyLanguageLearning.API
         */
         public static void PopulateLearningPaths(DataContext dbContext) 
         {
-            /*
+            
             foreach (var item in dbContext.LearningPaths)
             {
                 dbContext.Remove(item);
             }
             
             dbContext.SaveChanges();
-            */
-
+            
+            /*
             var id = Guid.NewGuid();
             var path = new LearningPathDM { Id = id, Name = "French"};
-            dbContext.LearningPaths.Add(path);
+            dbContext.LearningPathsDB.Add(path);
+            dbContext.SaveChanges();
+            */
+            dbContext.LearningPaths.Add(FromAggreage());
             dbContext.SaveChanges();
         }
-    }
+        public static LearningPath FromAggreage()
+        {
+            var aggregate = new ContentSupplyingAggreate();
+            return aggregate.CareteLearningPath(Guid.NewGuid(), "French");
+
+        }
+}
 }

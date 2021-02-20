@@ -19,9 +19,12 @@ namespace EasyLanguageLearning.Infrastructure.ContentSupplying
         public Task<LearningPath> GetLearningPath(Iso motherIso, Iso learningIso)
         {
             //todo filter by iso
-            var db = context.LearningPaths.First();
+            /*
+            var db = context.LearningPathsDB.First();
             var path = aggreate.CareteLearningPath(db.Id, db.Name);
             return Task.FromResult(path);
+            */
+            return Task.FromResult(context.LearningPaths.First());
         }
     }
 }
