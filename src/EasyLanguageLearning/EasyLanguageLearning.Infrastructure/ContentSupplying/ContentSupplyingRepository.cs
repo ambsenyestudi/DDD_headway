@@ -17,11 +17,6 @@ namespace EasyLanguageLearning.Infrastructure.ContentSupplying
             aggreate = new ContentSupplyingAggreate();
         }
 
-        public Task<Course> GetCourse(Iso motherIso, Iso learningIso)
-        {
-            return Task.FromResult(context.Courses.First());
-        }
-
         public Task<LearningPath> GetLearningPath(Iso motherIso, Iso learningIso)
         {
             return Task.FromResult(context.LearningPaths.First());

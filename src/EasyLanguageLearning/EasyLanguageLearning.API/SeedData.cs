@@ -22,10 +22,6 @@ namespace EasyLanguageLearning.API
                 {
                     PopulateLearningPaths(dbContext, aggregate);
                 }
-                if (!dbContext.Courses.Any())
-                {
-                    PopulateCourses(dbContext, aggregate);
-                }
             }
         }
         public static void PopulateLearningPaths(DataContext dbContext, ContentSupplyingAggreate aggregate)
@@ -43,44 +39,23 @@ namespace EasyLanguageLearning.API
             };
             foreach (var pathNameId in listPathNameDictionary)
             {
-                dbContext.LearningPaths.Add(FromAggreage(aggregate, pathNameId.Key, pathNameId.Value));
-            }
-
-            dbContext.SaveChanges();
-        }
-
-        public static void PopulateCourses(DataContext dbContext, ContentSupplyingAggreate aggregate)
-        {
-            
-            foreach (var item in dbContext.Courses)
-            {
-                dbContext.Remove(item);
-            }
-            dbContext.SaveChanges();
-            var pathCollection = dbContext.LearningPaths;
-            foreach (var path in pathCollection)
-            {
-                dbContext.Courses.Add(FromAggregate(aggregate, path));
+                dbContext.LearningPaths.Add(CreateaggregatewithFirstCourse(aggregate, pathNameId.Key, pathNameId.Value));
             }
 
             dbContext.SaveChanges();
         }
         
-        public static LearningPath FromAggreage(ContentSupplyingAggreate aggregate, string name, string guid="")
+        public static LearningPath CreateaggregatewithFirstCourse(ContentSupplyingAggreate aggregate, string name, string guid="")
         {
             var id = string.IsNullOrWhiteSpace(guid)
                 ? Guid.NewGuid()
                 : new Guid(guid);
-            
-            return aggregate.CareteLearningPath(id, name);
-        }
-        public static Course FromAggregate(ContentSupplyingAggreate aggregate, LearningPath learningPath, string guid="")
-        {
-            var id = string.IsNullOrWhiteSpace(guid)
+            var result = aggregate.CareteLearningPath(id, name);
+            var couresId = string.IsNullOrWhiteSpace(guid)
                 ? Guid.NewGuid()
                 : new Guid(guid);
-
-            return aggregate.CreateCourseFromPath(id, learningPath);
+            aggregate.AddCourseToPath(couresId, result);
+            return result;
         }
 }
 }

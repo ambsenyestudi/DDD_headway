@@ -3,6 +3,7 @@ using EasyLanguageLearning.Domain.ContentSupplying.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EasyLanguageLearning.API.Controllers
@@ -20,10 +21,11 @@ namespace EasyLanguageLearning.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<CourseViewModel>> Get()
         {
-            var path = await contentSupplyingRepository.GetCourse(Iso.CreateIso(IsoCodes.en), Iso.CreateIso(IsoCodes.fr));
+            var path = await contentSupplyingRepository.GetLearningPath(Iso.CreateIso(IsoCodes.en), Iso.CreateIso(IsoCodes.fr));
+            var course = path.Courses.First();
             return new List<CourseViewModel>
             {
-                new CourseViewModel { Name = path.Name }
+                new CourseViewModel { Name = course.Name }
             };
 
         }
