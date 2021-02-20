@@ -1,7 +1,7 @@
 ﻿using EasyLanguageLearning.Domain.Shared.Kernel;
 using System;
 
-namespace EasyLanguageLearning.Domain.ContentSupplying
+namespace EasyLanguageLearning.Domain.LearningPaths
 {
     public class LearningPathId:ValueId
     {

@@ -1,5 +1,5 @@
-﻿using EasyLanguageLearning.Domain.ContentSupplying;
-using EasyLanguageLearning.Domain.ContentSupplying.Aggregate;
+﻿using EasyLanguageLearning.Domain.ContentSupplying.Aggregate;
+using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 namespace EasyLanguageLearning.Infrastructure.ContentSupplying
 {
 
-    public class ContentSupplyingRepository : IContentSupplyingRepository
+    public class LearningPathsRepository : ILearningPathsRepository
     {
         private readonly DataContext context;
-        private readonly ContentSupplyingAggreate aggreate;
-        public ContentSupplyingRepository(DataContext context)
+        public LearningPathsRepository(DataContext context)
         {
             this.context = context;
-            aggreate = new ContentSupplyingAggreate();
         }
 
         public Task<LearningPath> GetLearningPath(Iso motherIso, Iso learningIso)

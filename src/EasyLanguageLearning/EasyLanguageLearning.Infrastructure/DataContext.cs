@@ -1,9 +1,6 @@
-﻿using EasyLanguageLearning.Domain.ContentSupplying;
-using EasyLanguageLearning.Domain.ContentSupplying.Aggregate;
-using EasyLanguageLearning.Infrastructure.ContentSupplying;
+﻿using EasyLanguageLearning.Domain.LearningPaths;
+using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Reflection;
 
 namespace EasyLanguageLearning.Infrastructure
 {
@@ -30,6 +27,10 @@ namespace EasyLanguageLearning.Infrastructure
             learningPathBuilder.OwnsMany(
                 p => p.Courses,
                 cou => {
+                    cou.Property(ca => ca.Level)
+                    .HasConversion(
+                        coNa => coNa.Value, 
+                        level => CourseLevel.Create(level));
                     cou.Property(ca => ca.LearningPathId)
                         .HasConversion(lpId => lpId.Value, lpGuid => new LearningPathId(lpGuid))
                         .HasColumnName(nameof(Course.LearningPathId)).IsRequired();

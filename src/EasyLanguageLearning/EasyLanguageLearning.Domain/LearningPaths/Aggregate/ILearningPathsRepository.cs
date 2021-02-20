@@ -1,9 +1,10 @@
-﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+﻿using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System.Threading.Tasks;
 
 namespace EasyLanguageLearning.Domain.ContentSupplying.Aggregate
 {
-    public interface IContentSupplyingRepository
+    public interface ILearningPathsRepository
     {
        Task<LearningPath> GetLearningPath(Iso motherIso, Iso learningIso);
     }

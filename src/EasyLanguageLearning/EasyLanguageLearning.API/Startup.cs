@@ -30,7 +30,7 @@ namespace EasyLanguageLearning.API
             //services.AddDbContext<DataContext>(options =>
             //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IContentSupplyingRepository, ContentSupplyingRepository>();
+            services.AddTransient<ILearningPathsRepository, LearningPathsRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

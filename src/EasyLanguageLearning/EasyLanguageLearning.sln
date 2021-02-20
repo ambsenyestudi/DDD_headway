@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{7CE7C9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyLanguageLearning.Domain", "EasyLanguageLearning.Domain\EasyLanguageLearning.Domain.csproj", "{EB7214F5-9791-4154-9C25-46A06943C5AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLanguageLearning.Domain.Test", "EasyLanguageLearning.Domain.Test\EasyLanguageLearning.Domain.Test.csproj", "{B13AFF45-5D9F-492D-A9B7-7C817F9E8F8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,12 +45,17 @@ Global
 		{EB7214F5-9791-4154-9C25-46A06943C5AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB7214F5-9791-4154-9C25-46A06943C5AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB7214F5-9791-4154-9C25-46A06943C5AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B13AFF45-5D9F-492D-A9B7-7C817F9E8F8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B13AFF45-5D9F-492D-A9B7-7C817F9E8F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B13AFF45-5D9F-492D-A9B7-7C817F9E8F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B13AFF45-5D9F-492D-A9B7-7C817F9E8F8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6590F5FB-05E4-430F-9EC9-ACA561069347} = {7CE7C931-B868-49E5-98EB-B3FD32EFD4F8}
+		{B13AFF45-5D9F-492D-A9B7-7C817F9E8F8E} = {0C943FD4-73D6-488B-B8E7-77C527F0D8A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F7E84FD-048F-4976-9788-C18136496068}

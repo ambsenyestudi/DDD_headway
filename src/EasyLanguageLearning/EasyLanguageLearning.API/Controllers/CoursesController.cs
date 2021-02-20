@@ -12,9 +12,9 @@ namespace EasyLanguageLearning.API.Controllers
     [ApiController]
     public class CoursesController : ControllerBase
     {
-        private readonly IContentSupplyingRepository contentSupplyingRepository;
+        private readonly ILearningPathsRepository contentSupplyingRepository;
 
-        public CoursesController(IContentSupplyingRepository contentSupplyingRepository)
+        public CoursesController(ILearningPathsRepository contentSupplyingRepository)
         {
             this.contentSupplyingRepository = contentSupplyingRepository;
         }
@@ -25,7 +25,7 @@ namespace EasyLanguageLearning.API.Controllers
             var course = path.Courses.First();
             return new List<CourseViewModel>
             {
-                new CourseViewModel { Name = course.Name }
+                new CourseViewModel { Name = course.GetName().ToString() }
             };
 
         }
