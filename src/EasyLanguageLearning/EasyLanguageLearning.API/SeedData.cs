@@ -1,9 +1,11 @@
 ﻿using EasyLanguageLearning.Domain.ContentSupplying;
+using EasyLanguageLearning.Domain.ContentSupplying.Aggregate;
 using EasyLanguageLearning.Infrastructure;
 using EasyLanguageLearning.Infrastructure.ContentSupplying;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EasyLanguageLearning.API
@@ -15,73 +17,70 @@ namespace EasyLanguageLearning.API
             using (var dbContext = new DataContext(
                services.GetRequiredService<DbContextOptions<DataContext>>()))
             {
-                
-                //PopulateCoursesData(dbContext);
-                PopulateLearningPaths(dbContext);
-
+                var aggregate = new ContentSupplyingAggreate();
+                if (!dbContext.LearningPaths.Any())
+                {
+                    PopulateLearningPaths(dbContext, aggregate);
+                }
+                if (!dbContext.Courses.Any())
+                {
+                    PopulateCourses(dbContext, aggregate);
+                }
             }
         }
-        /*
-        public static void PopulateCoursesData(DataContext dbContext)
+        public static void PopulateLearningPaths(DataContext dbContext, ContentSupplyingAggreate aggregate)
         {
-            
-            if (dbContext.Courses.Any())
-            {
-                return;   // DB has been seeded
-            }
-            foreach (var item in dbContext.Courses)
-            {
-                dbContext.Remove(item);
-            }
 
-            dbContext.SaveChanges();
-            dbContext.Courses.Add(new CourseDTO
-            {
-                Id = new Guid("c667c917-6857-437d-b05c-cb10d055cffe"),
-                Name = "French 1",
-                MotherLanguage = "English",
-                LearningLanguage = "French",
-                MotherLanguageIso = "en",
-                LearningLanguageIso = "fr"
-            });
-            dbContext.Courses.Add(new CourseDTO
-            {
-                Id = new Guid("3759cfa7-b989-4519-a763-b5f695916429"),
-                Name = "Spanish 1",
-                MotherLanguage = "English",
-                LearningLanguage = "Spanish",
-                MotherLanguageIso = "en",
-                LearningLanguageIso = "es"
-            });
-
-            dbContext.SaveChanges();
-            
-        }
-        */
-        public static void PopulateLearningPaths(DataContext dbContext) 
-        {
-            
             foreach (var item in dbContext.LearningPaths)
             {
                 dbContext.Remove(item);
             }
-            
+
             dbContext.SaveChanges();
-            
-            /*
-            var id = Guid.NewGuid();
-            var path = new LearningPathDM { Id = id, Name = "French"};
-            dbContext.LearningPathsDB.Add(path);
-            dbContext.SaveChanges();
-            */
-            dbContext.LearningPaths.Add(FromAggreage());
+            var listPathNameDictionary = new Dictionary<string, string>
+            {
+                ["French"] = "82d83571-5fdd-40c0-ac46-0eea57a19ab0"
+            };
+            foreach (var pathNameId in listPathNameDictionary)
+            {
+                dbContext.LearningPaths.Add(FromAggreage(aggregate, pathNameId.Key, pathNameId.Value));
+            }
+
             dbContext.SaveChanges();
         }
-        public static LearningPath FromAggreage()
-        {
-            var aggregate = new ContentSupplyingAggreate();
-            return aggregate.CareteLearningPath(Guid.NewGuid(), "French");
 
+        public static void PopulateCourses(DataContext dbContext, ContentSupplyingAggreate aggregate)
+        {
+            
+            foreach (var item in dbContext.Courses)
+            {
+                dbContext.Remove(item);
+            }
+            dbContext.SaveChanges();
+            var pathCollection = dbContext.LearningPaths;
+            foreach (var path in pathCollection)
+            {
+                dbContext.Courses.Add(FromAggregate(aggregate, path));
+            }
+
+            dbContext.SaveChanges();
+        }
+        
+        public static LearningPath FromAggreage(ContentSupplyingAggreate aggregate, string name, string guid="")
+        {
+            var id = string.IsNullOrWhiteSpace(guid)
+                ? Guid.NewGuid()
+                : new Guid(guid);
+            
+            return aggregate.CareteLearningPath(id, name);
+        }
+        public static Course FromAggregate(ContentSupplyingAggreate aggregate, LearningPath learningPath, string guid="")
+        {
+            var id = string.IsNullOrWhiteSpace(guid)
+                ? Guid.NewGuid()
+                : new Guid(guid);
+
+            return aggregate.CreateCourseFromPath(id, learningPath);
         }
 }
 }

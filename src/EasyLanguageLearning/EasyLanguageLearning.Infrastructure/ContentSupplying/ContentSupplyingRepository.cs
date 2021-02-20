@@ -16,14 +16,14 @@ namespace EasyLanguageLearning.Infrastructure.ContentSupplying
             this.context = context;
             aggreate = new ContentSupplyingAggreate();
         }
+
+        public Task<Course> GetCourse(Iso motherIso, Iso learningIso)
+        {
+            return Task.FromResult(context.Courses.First());
+        }
+
         public Task<LearningPath> GetLearningPath(Iso motherIso, Iso learningIso)
         {
-            //todo filter by iso
-            /*
-            var db = context.LearningPathsDB.First();
-            var path = aggreate.CareteLearningPath(db.Id, db.Name);
-            return Task.FromResult(path);
-            */
             return Task.FromResult(context.LearningPaths.First());
         }
     }

@@ -20,7 +20,7 @@ namespace EasyLanguageLearning.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<CourseViewModel>> Get()
         {
-            var path = await contentSupplyingRepository.GetLearningPath(Iso.CreateIso(IsoCodes.en), Iso.CreateIso(IsoCodes.fr));
+            var path = await contentSupplyingRepository.GetCourse(Iso.CreateIso(IsoCodes.en), Iso.CreateIso(IsoCodes.fr));
             return new List<CourseViewModel>
             {
                 new CourseViewModel { Name = path.Name }

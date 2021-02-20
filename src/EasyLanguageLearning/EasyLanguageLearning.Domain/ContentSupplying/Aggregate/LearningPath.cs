@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyLanguageLearning.Domain.ContentSupplying
+namespace EasyLanguageLearning.Domain.ContentSupplying.Aggregate
 {
     public class LearningPath
     {
@@ -22,5 +22,6 @@ namespace EasyLanguageLearning.Domain.ContentSupplying
         {
             Id = new LearningPathId(id);
         }
+       
     }
 }

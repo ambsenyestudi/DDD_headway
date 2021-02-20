@@ -6,5 +6,6 @@ namespace EasyLanguageLearning.Domain.ContentSupplying.Aggregate
     public interface IContentSupplyingRepository
     {
        Task<LearningPath> GetLearningPath(Iso motherIso, Iso learningIso);
+        Task<Course> GetCourse(Iso motherIso, Iso learningIso);
     }
 }

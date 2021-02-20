@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyLanguageLearning.Domain.ContentSupplying.Aggregate
 {
@@ -10,14 +6,23 @@ namespace EasyLanguageLearning.Domain.ContentSupplying.Aggregate
     {
         public LearningPathId LearningPathId { get; protected set; }
         public CourseId Id { get; protected set; }
-        public Course(Guid id, LearningPathId learningPathId)
+        public string Name { get; protected set; }
+        public Course(Guid id, LearningPathId learningPathId, string name)
         {
             Id = new CourseId(id);
             LearningPathId = learningPathId;
+            Name = name;
         }
         protected Course()
         {
         }
-        
+        public static string NameFromLearningPath(LearningPath path, int level) =>
+            path.Name +
+            $" {EnsureLevelIsGreaterThanZero(level)}";
+
+        public static int EnsureLevelIsGreaterThanZero(int level)=> 
+            level < 1
+                ? 1
+                : level;
     }
 }
