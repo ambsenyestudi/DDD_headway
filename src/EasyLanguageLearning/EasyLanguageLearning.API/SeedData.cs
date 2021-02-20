@@ -1,5 +1,4 @@
-﻿using EasyLanguageLearning.Application.Courses;
-using EasyLanguageLearning.Infrastructure;
+﻿using EasyLanguageLearning.Infrastructure;
 using EasyLanguageLearning.Infrastructure.ContentSupplying;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,13 +15,15 @@ namespace EasyLanguageLearning.API
                services.GetRequiredService<DbContextOptions<DataContext>>()))
             {
                 
-                PopulateCoursesData(dbContext);
+                //PopulateCoursesData(dbContext);
                 PopulateLearningPaths(dbContext);
 
             }
         }
+        /*
         public static void PopulateCoursesData(DataContext dbContext)
         {
+            
             if (dbContext.Courses.Any())
             {
                 return;   // DB has been seeded
@@ -53,20 +54,24 @@ namespace EasyLanguageLearning.API
             });
 
             dbContext.SaveChanges();
+            
         }
-
+        */
         public static void PopulateLearningPaths(DataContext dbContext) 
         {
+            /*
             foreach (var item in dbContext.LearningPaths)
             {
                 dbContext.Remove(item);
             }
-
+            
             dbContext.SaveChanges();
+            */
+
             var id = Guid.NewGuid();
-            var path = new LearningPathDM { dbId = id };
-            path.SetName("French");
+            var path = new LearningPathDM { Id = id, Name = "French"};
             dbContext.LearningPaths.Add(path);
+            dbContext.SaveChanges();
         }
     }
 }

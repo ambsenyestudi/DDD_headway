@@ -1,8 +1,6 @@
-using EasyLanguageLearning.Application.Courses;
 using EasyLanguageLearning.Domain.ContentSupplying.Aggregate;
 using EasyLanguageLearning.Infrastructure;
 using EasyLanguageLearning.Infrastructure.ContentSupplying;
-using EasyLanguageLearning.Infrastructure.Courses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace EasyLanguageLearning.API
 {
@@ -27,12 +26,10 @@ namespace EasyLanguageLearning.API
         {
             //string connectionString = Configuration.GetConnectionString("SqliteConnection");
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("SqliteConnection")));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<DataContext>(options =>
             //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<ICoursesService, CoursesService>();
-            services.AddTransient<ICoursesRepository, CoursesRepository>();
             services.AddTransient<IContentSupplyingRepository, ContentSupplyingRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>

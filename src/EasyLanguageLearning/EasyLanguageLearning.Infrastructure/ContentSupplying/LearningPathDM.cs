@@ -5,20 +5,13 @@ using System.Threading.Tasks;
 
 namespace EasyLanguageLearning.Infrastructure.ContentSupplying
 {
-    public class LearningPathDM : LearningPath
+    public class LearningPathDM
     {
         [Key]
-        
-        public Guid dbId 
-        {
-            get => Id.Value;
-            set => UpdateId(value);
-        }
-        public void SetName(string name)
-        {
-            base.UpdatName(name);
-        }
+        public Guid Id { get; set;}
+        public string Name { get; set; }
 
+       
             
     }
 }
