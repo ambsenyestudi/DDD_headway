@@ -6,18 +6,18 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
     public class CourseName: ValueObject
     {
         public string PathName { get;}
-        public CourseLevel Level { get; }
-        public static CourseName Empty { get; } = new CourseName(string.Empty, CourseLevel.Empty);
+        public Level Level { get; }
+        public static CourseName Empty { get; } = new CourseName(string.Empty, Level.Empty);
 
-        private CourseName(string pathName, CourseLevel level)
+        private CourseName(string pathName, Level level)
         {
             PathName = pathName;
             Level = level;
         }
 
         public static CourseName Create(string pathName, int level) =>
-            CourseLevel.IsPositiveLevel(level)
-            ? new CourseName(pathName, CourseLevel.Create(level))
+            Level.IsPositiveLevel(level)
+            ? new CourseName(pathName, Level.Create(level))
             : CourseName.Empty;
 
 

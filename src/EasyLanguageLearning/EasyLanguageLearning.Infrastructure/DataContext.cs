@@ -30,7 +30,7 @@ namespace EasyLanguageLearning.Infrastructure
                     cou.Property(ca => ca.Level)
                     .HasConversion(
                         coNa => coNa.Value, 
-                        level => CourseLevel.Create(level));
+                        level => Level.Create(level));
                     cou.Property(ca => ca.LearningPathId)
                         .HasConversion(lpId => lpId.Value, lpGuid => new LearningPathId(lpGuid))
                         .HasColumnName(nameof(Course.LearningPathId)).IsRequired();

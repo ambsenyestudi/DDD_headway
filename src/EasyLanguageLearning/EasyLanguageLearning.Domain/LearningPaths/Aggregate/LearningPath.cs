@@ -9,7 +9,7 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
         public LearningPathId Id { get; protected set; }
         public string Name { get; protected set; }
         public ICollection<Course> Courses { get; private set; } = new List<Course>();
-        //maby override collections to set pathName
+        //maybe override collections to set pathName
         protected LearningPath()
         {
         }
@@ -21,9 +21,12 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
 
         public void AddCourseFromLevel(int level, string id = "")
         {
-            EnsurePositiveLevel(level);
-            EnsureCourseLevelNotRepeated(level);
-            EnsureOrderedLevels(level);
+            Level.EnsurePostiveLevel(level);
+            var levelList = Courses.Select(x => x.Level).ToList();
+            var currLevel = Level.Create(level);
+
+            currLevel.EnsureNotRepeated(levelList);
+            currLevel.EnsureOrderlyFashon(levelList);
 
             if (!Guid.TryParse(id, out Guid courseId))
             {
@@ -35,38 +38,5 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
             Courses.Add(newCourse);
         }
 
-        private void EnsureOrderedLevels(int level)
-        {
-            var currentLevel = CourseLevel.Create(level);
-            if(Courses.Any())
-            {
-                var previousLevel = Courses.Last().Level;
-                if (!previousLevel.IsNextLevel(currentLevel))
-                {
-                    throw new ArgumentException($"Course levels must be order instead of {previousLevel}, {currentLevel}");
-                }
-            }
-            else if(currentLevel != CourseLevel.First)
-            {
-                throw new ArgumentException($"Course levels start at {CourseLevel.First}");
-            }
-            
-        }
-
-        public void EnsureCourseLevelNotRepeated(int level) 
-        {
-            var currLevel = CourseLevel.Create(level);
-            if (Courses.Any(c => c.Level == currLevel)) 
-            {
-                throw new ArgumentException("Repeated course level");
-            }
-        }
-        public void EnsurePositiveLevel(int level)
-        {
-            if (!CourseLevel.IsPositiveLevel(level))
-            {
-                throw new ArgumentException("Invalid course settings");
-            }
-        }
     }
 }
