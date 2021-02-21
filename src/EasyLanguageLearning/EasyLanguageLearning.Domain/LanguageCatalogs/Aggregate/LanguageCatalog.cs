@@ -18,6 +18,7 @@ namespace EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate
             Iso = motherLanguageIso;
         }
 
+        //Todo refactor to use service
         public void AddToCatalog(Iso iso, string LanguageName, Guid guid = new Guid())
         {
             if(guid == Guid.Empty)

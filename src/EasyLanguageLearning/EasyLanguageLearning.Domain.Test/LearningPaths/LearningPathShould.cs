@@ -11,8 +11,9 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
         public void HaveName()
         {
             var learningPath = new LearningPath(
-                new Guid(testC.LEARNING_PATH_ID), 
-                testC.LEARNING_PATH_NAME);
+                new Guid(testC.LEARNING_PATH_ID),
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             Assert.NotEmpty(learningPath.Name);
         }
         [Fact]
@@ -21,7 +22,8 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
             var repeatedLevel = 1;
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             learningPath.AddCourseFromLevel(repeatedLevel, testC.FIRST_COURSE_ID);
             Assert.Throws<ArgumentException>(()=>learningPath.AddCourseFromLevel(repeatedLevel, testC.SECOND_COURSE_ID));
         }
@@ -31,7 +33,8 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
             var nonPositiveLeve = 0;
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             Assert.Throws<ArgumentException>(() => learningPath.AddCourseFromLevel(nonPositiveLeve, testC.FIRST_COURSE_ID));
         }
 
@@ -42,7 +45,8 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
         {
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             learningPath.AddCourseFromLevel(firstLevel, testC.FIRST_COURSE_ID);
             Assert.Throws<ArgumentException>(() => learningPath.AddCourseFromLevel(nonOrderedLevel, testC.FIRST_COURSE_ID));
         }
@@ -54,7 +58,8 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
         {
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             Assert.Throws<ArgumentException>(() => learningPath.AddCourseFromLevel(nonFirstCourse, testC.FIRST_COURSE_ID));
         }
 
@@ -63,7 +68,8 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
         {
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             learningPath.AddCourseFromLevel(1, testC.FIRST_COURSE_ID);
             Assert.NotEmpty(learningPath.Courses);
         }

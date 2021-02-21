@@ -7,12 +7,14 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
 {
     public class CourseShould
     {
+        
         [Fact]
         public void AddFirstLesson()
         {
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             learningPath.AddCourseFromLevel(1, testC.FIRST_COURSE_ID);
             var firstCourse = learningPath.Courses.First();
             firstCourse.AddLesson(testC.FIRST_LESSON_NAME, 1);
@@ -25,7 +27,8 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
             var repeatedLevel = 1;
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             learningPath.AddCourseFromLevel(repeatedLevel, testC.FIRST_COURSE_ID);
             var firstCourse = learningPath.Courses.First();
             firstCourse.AddLesson(testC.FIRST_LESSON_NAME, repeatedLevel);
@@ -39,7 +42,8 @@ namespace EasyLanguageLearning.Domain.Test.LearningPaths
         {
             var learningPath = new LearningPath(
                 new Guid(testC.LEARNING_PATH_ID),
-                testC.LEARNING_PATH_NAME);
+                testC.fr_LearningLanguage,
+                testC.en_MotherIso);
             learningPath.AddCourseFromLevel(1, testC.FIRST_COURSE_ID);
             var firstCourse = learningPath.Courses.First();
             Assert.Throws<ArgumentException>(() => firstCourse.AddLesson(testC.FIRST_LESSON_NAME, nonFirstCourse));
