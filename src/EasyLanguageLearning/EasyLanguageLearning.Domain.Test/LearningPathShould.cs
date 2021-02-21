@@ -39,5 +39,24 @@ namespace EasyLanguageLearning.Domain.Test
             var learningPath = new LearningPath(LEARNING_PATH_ID, COURSE_NAME);
             Assert.Throws<ArgumentException>(() => learningPath.AddCourseFromLevel(nonPositiveLeve, FIRST_COURSE_ID));
         }
+
+        [Theory]
+        [InlineData(1, 3)]
+        [InlineData(1, 5)]
+        public void NotAllowUnorderedCourseAdding(int firstLevel, int nonOrderedLevel)
+        {
+            var learningPath = new LearningPath(LEARNING_PATH_ID, COURSE_NAME);
+            learningPath.AddCourseFromLevel(firstLevel, FIRST_COURSE_ID);
+            Assert.Throws<ArgumentException>(() => learningPath.AddCourseFromLevel(nonOrderedLevel, FIRST_COURSE_ID));
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(5)]
+        public void HaveFirstCourseOfLevel1(int nonFirstCourse)
+        {
+            var learningPath = new LearningPath(LEARNING_PATH_ID, COURSE_NAME);
+            Assert.Throws<ArgumentException>(() => learningPath.AddCourseFromLevel(nonFirstCourse, FIRST_COURSE_ID));
+        }
     }
 }

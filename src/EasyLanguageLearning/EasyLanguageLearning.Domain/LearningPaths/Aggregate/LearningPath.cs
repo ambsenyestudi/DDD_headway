@@ -23,6 +23,7 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
         {
             EnsurePositiveLevel(level);
             EnsureCourseLevelNotRepeated(level);
+            EnsureOrderedLevels(level);
 
             if (!Guid.TryParse(id, out Guid courseId))
             {
@@ -33,6 +34,25 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
             var newCourse = new Course(courseId, Id, courseName);
             Courses.Add(newCourse);
         }
+
+        private void EnsureOrderedLevels(int level)
+        {
+            var currentLevel = CourseLevel.Create(level);
+            if(Courses.Any())
+            {
+                var previousLevel = Courses.Last().Level;
+                if (!previousLevel.IsNextLevel(currentLevel))
+                {
+                    throw new ArgumentException($"Course levels must be order instead of {previousLevel}, {currentLevel}");
+                }
+            }
+            else if(currentLevel != CourseLevel.First)
+            {
+                throw new ArgumentException($"Course levels start at {CourseLevel.First}");
+            }
+            
+        }
+
         public void EnsureCourseLevelNotRepeated(int level) 
         {
             var currLevel = CourseLevel.Create(level);
