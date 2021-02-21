@@ -33,26 +33,31 @@ namespace EasyLanguageLearning.API
             }
 
             dbContext.SaveChanges();
+            //"82d83571-5fdd-40c0-ac46-0eea57a19ab0"
             var listPathNameDictionary = new Dictionary<string, string>
             {
                 ["French"] = "82d83571-5fdd-40c0-ac46-0eea57a19ab0"
             };
             foreach (var pathNameId in listPathNameDictionary)
             {
-                dbContext.LearningPaths.Add(CreateaggregatewithFirstCourse(pathNameId.Key, pathNameId.Value));
+                dbContext.LearningPaths.Add(CreateaggregateWithFirstCourseAndLesson(pathNameId.Key, pathNameId.Value));
             }
 
             dbContext.SaveChanges();
         }
         
-        public static LearningPath CreateaggregatewithFirstCourse(string name, string guid="")
+        public static LearningPath CreateaggregateWithFirstCourseAndLesson(string name, string guid="")
         {
-            var id = string.IsNullOrWhiteSpace(guid)
-                ? Guid.NewGuid()
-                : new Guid(guid);
-            var result = new LearningPath(id, name);
-            result.AddCourseFromLevel(1);
+            var result = CreateAggregate(name, guid);
+            var couresId = result.AddCourseFromLevel(1);
+            result.AddLessonToCourse(couresId, "Launch pad", 1);
             return result;
         }
-}
+
+        private static LearningPath CreateAggregate(string name, string guidRaw = "") =>
+            Guid.TryParse(guidRaw, out Guid guid)
+                ? new LearningPath(guid, name)
+                : new LearningPath(Guid.NewGuid(), name);
+        
+    }
 }

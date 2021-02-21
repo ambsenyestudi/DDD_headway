@@ -15,5 +15,7 @@ namespace EasyLanguageLearning.Domain.Shared.Kernel
         {
             yield return Value;
         }
+        public Guid AsGuid() =>
+            Value;
     }
 }

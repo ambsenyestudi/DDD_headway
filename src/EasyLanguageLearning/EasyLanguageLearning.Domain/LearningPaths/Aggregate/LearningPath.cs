@@ -19,7 +19,7 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
             Name = name;
         }
 
-        public void AddCourseFromLevel(int level, string id = "")
+        public CourseId AddCourseFromLevel(int level, string id = "")
         {
             Level.EnsurePostiveLevel(level);
             var levelList = Courses.Select(x => x.Level).ToList();
@@ -36,6 +36,12 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
                         
             var newCourse = new Course(courseId, Id, courseName);
             Courses.Add(newCourse);
+            return newCourse.Id;
+        }
+        public void AddLessonToCourse(CourseId courseId, string name, int level, string guidId = "")
+        {
+            var course = Courses.FirstOrDefault(co => co.Id == courseId);
+            course.AddLesson(name, level, guidId);
         }
 
     }

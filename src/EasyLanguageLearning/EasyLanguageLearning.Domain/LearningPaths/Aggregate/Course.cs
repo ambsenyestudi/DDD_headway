@@ -42,7 +42,7 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
             currLevel.EnsureNotRepeated(levelList);
             currLevel.EnsureOrderlyFashon(levelList);
 
-            var currLesson = new Lesson(lessonId, name, Level.Create(level));
+            var currLesson = new Lesson(lessonId, name, Level.Create(level), Id);
             Lessons.Add(currLesson);
         }
 
