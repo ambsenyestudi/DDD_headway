@@ -1,5 +1,7 @@
 ﻿using EasyLanguageLearning.API.ViewModels;
 using EasyLanguageLearning.Domain.ContentSupplying;
+using EasyLanguageLearning.Domain.LanguageContents;
+using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,10 +16,14 @@ namespace EasyLanguageLearning.API.Controllers
     public class LessonsController : ControllerBase
     {
         private readonly ILearningPathsRepository contentSupplyingRepository;
+        private readonly ILanguageContentRepository languageContentRepository;
 
-        public LessonsController(ILearningPathsRepository contentSupplyingRepository)
+        public LessonsController(
+            ILearningPathsRepository contentSupplyingRepository, 
+            ILanguageContentRepository languageContentRepository)
         {
             this.contentSupplyingRepository = contentSupplyingRepository;
+            this.languageContentRepository = languageContentRepository;
         }
         [HttpGet]
         public async Task<IEnumerable<LessonViewModel>> Get(Guid courseId)
@@ -37,6 +43,13 @@ namespace EasyLanguageLearning.API.Controllers
 
 
             throw new ArgumentException("Ooops no courses");
+        }
+
+        [HttpGet("Content")]
+        public async Task<IEnumerable<LanguageContent>> GetContent(Guid lessonId)
+        {
+            var content = await languageContentRepository.GetBy(new LessonId(lessonId));
+            return content;
         }
     }
 }

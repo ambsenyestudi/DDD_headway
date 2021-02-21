@@ -1,3 +1,4 @@
+using EasyLanguageLearning.API.Seeding;
 using EasyLanguageLearning.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

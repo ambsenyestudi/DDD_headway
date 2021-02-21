@@ -1,7 +1,9 @@
 using EasyLanguageLearning.Application.LearningPaths;
 using EasyLanguageLearning.Domain.ContentSupplying;
+using EasyLanguageLearning.Domain.LanguageContents;
 using EasyLanguageLearning.Infrastructure;
 using EasyLanguageLearning.Infrastructure.ContentSupplying;
+using EasyLanguageLearning.Infrastructure.LanguageContents;
 using EasyLanguageLearning.Infrastructure.LearningPaths;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +32,7 @@ namespace EasyLanguageLearning.API
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<ILearningPathService, LearningPathService>();
             services.AddTransient<ILearningPathsRepository, LearningPathsRepository>();
+            services.AddTransient<ILanguageContentRepository, LanguageContentRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
