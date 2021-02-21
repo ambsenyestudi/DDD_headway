@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,15 +10,19 @@ namespace EasyLanguageLearning.Domain.LearningPaths.Aggregate
     {
         public LearningPathId Id { get; protected set; }
         public string Name { get; protected set; }
+        public Iso LearningLanguageIso { get; protected set; }
+        public Iso MotherLanguageIso { get; protected set; }
         public ICollection<Course> Courses { get; private set; } = new List<Course>();
         //maybe override collections to set pathName
         protected LearningPath()
         {
         }
-        public LearningPath(Guid id, string name)
+        public LearningPath(Guid id, LearningLanguage learningLanguage, Iso motherLanguageIso)
         {
             Id = new LearningPathId(id);
-            Name = name;
+            Name = learningLanguage.Name;
+            LearningLanguageIso = learningLanguage.Iso;
+            MotherLanguageIso = motherLanguageIso;
         }
 
         public CourseId AddCourseFromLevel(int level, string id = "")
