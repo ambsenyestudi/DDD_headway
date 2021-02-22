@@ -1,5 +1,4 @@
 ﻿using EasyLanguageLearning.Domain.LanguageCatalogs;
-using EasyLanguageLearning.Domain.LanguageContents;
 using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;

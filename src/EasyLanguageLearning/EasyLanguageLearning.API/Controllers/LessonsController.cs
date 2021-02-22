@@ -1,8 +1,9 @@
 ﻿using EasyLanguageLearning.API.ViewModels;
 using EasyLanguageLearning.Domain.ContentSupplying;
-using EasyLanguageLearning.Domain.LanguageContents;
 using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using EasyLanguageLearning.Domain.VocabularyUnits;
+using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,14 @@ namespace EasyLanguageLearning.API.Controllers
     public class LessonsController : ControllerBase
     {
         private readonly ILearningPathsRepository contentSupplyingRepository;
-        private readonly ILanguageContentRepository languageContentRepository;
+        private readonly IVocabularyUnitRepository vocabularyUnitRepository;
 
         public LessonsController(
             ILearningPathsRepository contentSupplyingRepository, 
-            ILanguageContentRepository languageContentRepository)
+            IVocabularyUnitRepository vocabularyUnitRepository)
         {
             this.contentSupplyingRepository = contentSupplyingRepository;
-            this.languageContentRepository = languageContentRepository;
+            this.vocabularyUnitRepository = vocabularyUnitRepository;
         }
         [HttpGet]
         public async Task<IEnumerable<LessonViewModel>> Get(Guid courseId)
@@ -46,10 +47,11 @@ namespace EasyLanguageLearning.API.Controllers
         }
 
         [HttpGet("Content")]
-        public async Task<IEnumerable<LanguageContent>> GetContent(Guid lessonId)
+        public async Task<IEnumerable<Vocabulary>> GetContent(Guid lessonId)
         {
-            var content = await languageContentRepository.GetBy(new LessonId(lessonId));
-            return content;
+            //todo get vocabulary unit Id from lesson
+            var vocabularyUnit = await vocabularyUnitRepository.GetBy(new VocabularyUnitId(lessonId));
+            return vocabularyUnit.VocabularyItems;
         }
     }
 }

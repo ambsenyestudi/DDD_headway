@@ -1,5 +1,5 @@
-﻿using EasyLanguageLearning.Domain.LanguageContents;
-using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using EasyLanguageLearning.Domain.VocabularyUnits;
 using System.Collections.Generic;
 using Xunit;
 

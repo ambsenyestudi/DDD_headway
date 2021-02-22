@@ -1,12 +1,8 @@
 ﻿using EasyLanguageLearning.Domain.Shared.Kernel;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EasyLanguageLearning.Domain.LanguageContents
+namespace EasyLanguageLearning.Domain.VocabularyUnits
 {
     public class TranslatedContent : ValueObject
     {

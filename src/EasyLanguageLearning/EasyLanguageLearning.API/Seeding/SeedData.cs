@@ -25,9 +25,9 @@ namespace EasyLanguageLearning.API.Seeding
                 {
                     SeedLearningPath.Populate(dbContext);
                 }
-                if (!dbContext.LanguageContents.Any())
+                if (!dbContext.VocabularyUnits.Any())
                 {
-                    SeedLanguageContent.Populate(dbContext);
+                    SeedVocabulary.Populate(dbContext);
                 }
                 
             }

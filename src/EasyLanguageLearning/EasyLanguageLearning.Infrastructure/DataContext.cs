@@ -1,9 +1,9 @@
 ﻿using EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate;
-using EasyLanguageLearning.Domain.LanguageContents;
 using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
+using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using EasyLanguageLearning.Infrastructure.LanguageCatalogs;
-using EasyLanguageLearning.Infrastructure.LanguageContents;
 using EasyLanguageLearning.Infrastructure.LearningPaths;
+using EasyLanguageLearning.Infrastructure.VocabularyUnits;
 using Microsoft.EntityFrameworkCore;
 
 namespace EasyLanguageLearning.Infrastructure
@@ -13,7 +13,7 @@ namespace EasyLanguageLearning.Infrastructure
 
         public DbSet<LearningPath> LearningPaths { get; set; }
         public DbSet<LanguageCatalog> LanguageCatalogs { get; set; }
-        public DbSet<LanguageContent> LanguageContents { get; set; }
+        public DbSet<VocabularyUnit> VocabularyUnits { get; set; }
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {   
         }
@@ -23,7 +23,7 @@ namespace EasyLanguageLearning.Infrastructure
             // Map table names
             modelBuilder.BuildLearningPathModel();
             modelBuilder.BuildLangaugeCatalogModel();
-            modelBuilder.BuildLanguageContentModel();
+            modelBuilder.BuildVocabularyUnitModel();
             base.OnModelCreating(modelBuilder);
 
         }
