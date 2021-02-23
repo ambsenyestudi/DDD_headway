@@ -26,5 +26,14 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
             //Todo test that have matching isos
             VocabularyItems.Add(new Vocabulary(Guid.NewGuid(), Id, term));
         }
+
+        public WritingExercise CreateWritingExercise(TranslatedContent content, bool isLearningLanguageHeading = false)
+        {
+            if(content == null)
+            {
+                throw new ArgumentException($"Can't {nameof(CreateWritingExercise)}");
+            }
+            return new WritingExercise(content, isLearningLanguageHeading);
+        }
     }
 }

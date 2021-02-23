@@ -3,7 +3,7 @@ using EasyLanguageLearning.Domain.VocabularyUnits;
 using System.Collections.Generic;
 using Xunit;
 
-namespace EasyLanguageLearning.Domain.Test.LanguageContents
+namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
 {
     public class TranslatedContentShould
     {
