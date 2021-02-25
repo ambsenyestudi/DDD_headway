@@ -8,10 +8,6 @@ namespace EasyLanguageLearning.API.Seeding
 {
     public class SeedData
     {
-        
-        
-        
-        
         public static void Initialize(IServiceProvider services)
         {
             using (var dbContext = new DataContext(

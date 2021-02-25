@@ -1,81 +1,40 @@
-﻿using System.Linq;
+﻿using System;
 
 namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
 {
     public class WritingExercise
     {
+        public WritingExerciseId Id { get; protected set; }
+        public VocabularyId VocabularyId { get; protected set; }
+        public bool IsLearningLanguageHeading { get; protected set; }
         public string Heading { get; protected set; }
-        protected string Answer { get; set; }
-
-        internal WritingExercise(TranslatedContent rightSolution, bool isLearningLanguageHeading = false)            
+        public WritingExerciseAnswerKey AnswerKey { get; protected set; }
+        protected WritingExercise()
         {
-            
-            Heading = GetHeading(rightSolution, isLearningLanguageHeading);
-            Answer = GetAnswer(rightSolution, isLearningLanguageHeading);
         }
-
-        //todo test evaluate method
-        public ExerciseOutcome Evaluate(string writtenAnswer)
+        internal WritingExercise(Guid id, Vocabulary vocabulary, bool isLearningLanguageHeading = false)
         {
-
-            if (IsRightAnswer(writtenAnswer))
-            {
-                return ExerciseOutcome.CreateRightAnswer(writtenAnswer);
-            }
-
-            var accuracyPercentage = FigureAccuracyPercentage(writtenAnswer, Answer);
-            if (accuracyPercentage < 0.5f)
-            {
-                return ExerciseOutcome.CreateWrongAnswer(Answer);
-            }
-            return ExerciseOutcome.CreateAlmosCorrectAnswer(Answer);
+            Id = new WritingExerciseId(id);
+            VocabularyId = vocabulary.Id;
+            IsLearningLanguageHeading = isLearningLanguageHeading;
+            Heading = GetHeading(vocabulary);
+            AnswerKey = new WritingExerciseAnswerKey(GetHeading(vocabulary), GetAnswer(vocabulary));
         }
+        public ExerciseOutcome Evaluate(string writtenAnswer) =>
+            AnswerKey.Evaluate(writtenAnswer);
 
-        public string GetTip(string partialAnswer)
-        {
-            var tipIndex = 0;
-            var count = 0;
-            bool isDiscrepancy = false;
-            while (!isDiscrepancy && count < Answer.Length)
-            {
-                if (count < partialAnswer.Length)
-                {
-                    var nextAnswer = partialAnswer[count];
-                    var nextCorrect = Answer[count];
-                    isDiscrepancy = nextAnswer != nextCorrect;
-                    if (isDiscrepancy)
-                    {
-                        tipIndex = count;
-                    }
-                    count++;
-                }
-                else
-                {
-                    isDiscrepancy = true;
-                    tipIndex = count;
-                }
-            }
+        public string GetTip(string partialAnswer) =>
+            AnswerKey.GetTip(partialAnswer);
 
-            return Answer.Substring(0, tipIndex + 1);
+        private string GetHeading(Vocabulary vocabulary) =>
+            IsLearningLanguageHeading
+                ? vocabulary.LearningLanguageTerm
+                : vocabulary.MotherLanguageTerm;
 
-        }
-        private bool IsRightAnswer(string studentAnswer) =>
-            studentAnswer == Answer;
-        private string GetHeading(TranslatedContent content, bool isLearningHeading) =>
-            isLearningHeading
-                ? content.LearningLanguageTerm
-                : content.MotherLanguageTerm;
-
-        private string GetAnswer(TranslatedContent content, bool isLearningHeading) =>
-            isLearningHeading
-                ? content.MotherLanguageTerm
-                : content.LearningLanguageTerm;
-        private float FigureAccuracyPercentage(string writtenAnswer, string translatedTerm)
-        {
-            float accuracyCount = translatedTerm.Intersect(writtenAnswer).Count();
-            float totalCount = translatedTerm.Count();
-            return accuracyCount / totalCount;
-        }
+        private string GetAnswer(Vocabulary vocabulary) =>
+            IsLearningLanguageHeading
+                ? vocabulary.MotherLanguageTerm
+                : vocabulary.LearningLanguageTerm;
 
     }
 }

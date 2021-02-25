@@ -24,6 +24,10 @@ namespace EasyLanguageLearning.Domain.Shared.Kernel
 
         public override bool Equals(object obj)
         {
+            if(obj==null)
+            {
+                return false;
+            }
             var thisType = obj.GetType();
             var otherType = GetType();
             if (obj == null || obj.GetType() != GetType())

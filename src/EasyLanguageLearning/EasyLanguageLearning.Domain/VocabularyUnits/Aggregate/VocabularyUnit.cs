@@ -1,4 +1,5 @@
-﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+﻿using EasyLanguageLearning.Domain.LearningPaths;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System;
 using System.Collections.Generic;
 
@@ -7,6 +8,7 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
     public class VocabularyUnit
     {
         public VocabularyUnitId Id { get; protected set; }
+        public LessonId LessonId { get; protected set; }
         public ICollection<Vocabulary> VocabularyItems { get; protected set; } = new List<Vocabulary>();
         public Iso MotherLanguageIso { get; protected set; }
         public Iso LearningLanguageIso { get; protected set; }
@@ -14,9 +16,10 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
         {
 
         }
-        public VocabularyUnit(Guid id, Iso motherLanguageIso, Iso learningLanguageIso)
+        public VocabularyUnit(Guid id, LessonId lessonId, Iso motherLanguageIso, Iso learningLanguageIso)
         {
             Id = new VocabularyUnitId(id);
+            LessonId = lessonId;
             MotherLanguageIso = motherLanguageIso;
             LearningLanguageIso = learningLanguageIso;
         }
@@ -27,13 +30,17 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
             VocabularyItems.Add(new Vocabulary(Guid.NewGuid(), Id, term));
         }
 
-        public WritingExercise CreateWritingExercise(TranslatedContent content, bool isLearningLanguageHeading = false)
+        public WritingExercise CreateWritingExercise(Vocabulary vocabulary, Guid id = new Guid(), bool isLearningLanguageHeading = false)
         {
-            if(content == null)
+            if(vocabulary == null)
             {
                 throw new ArgumentException($"Can't {nameof(CreateWritingExercise)}");
             }
-            return new WritingExercise(content, isLearningLanguageHeading);
+            if(id ==  Guid.Empty)
+            {
+                id = Guid.NewGuid();
+            }
+            return new WritingExercise(id, vocabulary, isLearningLanguageHeading);
         }
     }
 }

@@ -2,6 +2,7 @@
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
@@ -31,8 +32,9 @@ namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
         {
             var expectedResult = TestResults.Right;
             var content = TranslatedContent.Create(EN_ISO, "Yes", FR_ISO, "Oui");
-
-            var exercise = vocabularyUnit.CreateWritingExercise(content, isLeaningLanguage);
+            vocabularyUnit.AddVocabulary(content);
+            var vocabulary = vocabularyUnit.VocabularyItems.First();
+            var exercise = vocabularyUnit.CreateWritingExercise(vocabulary, Guid.NewGuid(), isLeaningLanguage);
             var result = exercise.Evaluate(answer);
 
             Assert.Equal(expectedResult, result.Result);
@@ -46,8 +48,9 @@ namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
 
             var partialAnswer = testAnswer.Substring(0, 2);
             var content = TranslatedContent.Create(EN_ISO, "Yes", FR_ISO, "Oui");
-
-            var exercise = vocabularyUnit.CreateWritingExercise(content, true);
+            vocabularyUnit.AddVocabulary(content);
+            var vocabulary = vocabularyUnit.VocabularyItems.First();
+            var exercise = vocabularyUnit.CreateWritingExercise(vocabulary, Guid.NewGuid(), true);
             var result = exercise.Evaluate(partialAnswer);
 
             Assert.Equal(expectedResult, result.Result);
@@ -60,8 +63,10 @@ namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
 
             var wrongAnswer = "1234567###";
             var content = TranslatedContent.Create(EN_ISO, "Yes", FR_ISO, "Oui");
+            vocabularyUnit.AddVocabulary(content);
+            var vocabulary = vocabularyUnit.VocabularyItems.First();
 
-            var exercise = vocabularyUnit.CreateWritingExercise(content, true);
+            var exercise = vocabularyUnit.CreateWritingExercise(vocabulary, Guid.NewGuid());
             var result = exercise.Evaluate(wrongAnswer);
 
             Assert.Equal(expectedResult, result.Result);
@@ -73,8 +78,10 @@ namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
         public void AddACorrectLettreToTheRightPartOfYourAnswer(string currAnswer, string expectedTip, bool isLeaningLanguage)
         {
             var content = TranslatedContent.Create(EN_ISO, "Good morining", FR_ISO, "Bon jour");
+            vocabularyUnit.AddVocabulary(content);
+            var vocabulary = vocabularyUnit.VocabularyItems.First();
 
-            var exercise = vocabularyUnit.CreateWritingExercise(content, isLeaningLanguage);
+            var exercise = vocabularyUnit.CreateWritingExercise(vocabulary, Guid.NewGuid(), isLeaningLanguage);
             var result = exercise.GetTip(currAnswer);
 
             Assert.Equal(expectedTip, result);

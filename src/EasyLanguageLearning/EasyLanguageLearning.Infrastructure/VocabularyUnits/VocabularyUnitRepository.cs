@@ -1,9 +1,8 @@
-﻿using EasyLanguageLearning.Domain.VocabularyUnits;
+﻿using EasyLanguageLearning.Domain.LearningPaths;
+using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
@@ -16,8 +15,15 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
         {
             this.dataContext = dataContext;
         }
-        public Task<VocabularyUnit> GetBy(VocabularyUnitId id) =>
+        public Task<VocabularyUnit> GetBy(LessonId lessonId) => 
+            Task.Factory.StartNew(() => 
+                dataContext.VocabularyUnits
+                    .Include(x => x.VocabularyItems)
+                    .FirstOrDefault(vu => vu.LessonId == lessonId)
+                );
+
+        public Task<WritingExercise> GetWritingExerciseBy(VocabularyId id) =>
             Task.Factory.StartNew(() =>
-                dataContext.VocabularyUnits.FirstOrDefault(vu => vu.Id == id));
+                dataContext.WritingExercises.FirstOrDefault(vu => vu.VocabularyId == id));
     }
 }

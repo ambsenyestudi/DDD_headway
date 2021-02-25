@@ -1,9 +1,11 @@
-﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+﻿using EasyLanguageLearning.Domain.LearningPaths;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using EasyLanguageLearning.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EasyLanguageLearning.API.Seeding
 {
@@ -22,6 +24,23 @@ namespace EasyLanguageLearning.API.Seeding
                 vocUnitId: new Guid(EN_FR_FIRST_UNIT));
             dbContext.VocabularyUnits.Add(vocUnit);
             dbContext.SaveChanges();
+            
+            var exercises = CreateWritingExercises(vocUnit);
+            
+            foreach (var exercise in exercises)
+            {
+                dbContext.WritingExercises.Add(exercise);
+            }
+            
+            dbContext.SaveChanges();
+          
+            
+        }
+
+        private static List<WritingExercise> CreateWritingExercises(VocabularyUnit vocUnit)
+        {
+            var result = vocUnit.VocabularyItems.Select(voc => vocUnit.CreateWritingExercise(voc)).ToList();
+            return result;
         }
 
         private static VocabularyUnit TranslateEnFr(Dictionary<string, string> transltions, 
@@ -35,7 +54,9 @@ namespace EasyLanguageLearning.API.Seeding
             }
             var motherIso = Iso.CreateIso(motherIsoCode);
             var learningIso = Iso.CreateIso(learningIsoCode);
+            var lessonId = new LessonId(new Guid(SeedLearningPath.EN_FR_FIRST_LESSON_ID));
             var vocUnit =  new VocabularyUnit(vocUnitId,
+                lessonId,
                 motherIso,
                 learningIso);
             //Todo add translations

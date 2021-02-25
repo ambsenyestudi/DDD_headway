@@ -3,9 +3,9 @@ using System;
 
 namespace EasyLanguageLearning.Domain.VocabularyUnits
 {
-    public class VocabularyUnitId : ValueId
+    public class WritingExerciseId : ValueId
     {
-        public VocabularyUnitId(Guid id) : base(id)
+        public WritingExerciseId(Guid id) : base(id)
         {
         }
     }

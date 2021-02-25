@@ -1,10 +1,12 @@
-﻿using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
+﻿using EasyLanguageLearning.Domain.LearningPaths;
+using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using System.Threading.Tasks;
 
 namespace EasyLanguageLearning.Domain.VocabularyUnits
 {
     public interface IVocabularyUnitRepository
     {
-        Task<VocabularyUnit> GetBy(VocabularyUnitId id);
+        Task<VocabularyUnit> GetBy(LessonId id);
+        Task<WritingExercise> GetWritingExerciseBy(VocabularyId id);
     }
 }

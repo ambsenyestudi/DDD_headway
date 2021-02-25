@@ -14,6 +14,7 @@ namespace EasyLanguageLearning.Infrastructure
         public DbSet<LearningPath> LearningPaths { get; set; }
         public DbSet<LanguageCatalog> LanguageCatalogs { get; set; }
         public DbSet<VocabularyUnit> VocabularyUnits { get; set; }
+        public DbSet<WritingExercise> WritingExercises { get; set; }
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {   
         }
@@ -24,6 +25,7 @@ namespace EasyLanguageLearning.Infrastructure
             modelBuilder.BuildLearningPathModel();
             modelBuilder.BuildLangaugeCatalogModel();
             modelBuilder.BuildVocabularyUnitModel();
+            modelBuilder.BuildWritingExerciseModel();
             base.OnModelCreating(modelBuilder);
 
         }
