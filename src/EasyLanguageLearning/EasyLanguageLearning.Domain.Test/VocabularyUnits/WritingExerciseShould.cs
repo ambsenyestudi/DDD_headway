@@ -1,4 +1,5 @@
-﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+﻿using EasyLanguageLearning.Domain.LearningPaths;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using System;
@@ -16,7 +17,8 @@ namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
         public WritingExerciseShould()
         {
             var id = Guid.NewGuid();
-            vocabularyUnit = new VocabularyUnit(id, EN_ISO, FR_ISO);
+            var lessonId = new LessonId(Guid.NewGuid());
+            vocabularyUnit = new VocabularyUnit(id, lessonId, EN_ISO, FR_ISO);
         }
 
         [Fact]

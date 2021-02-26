@@ -7,6 +7,5 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits
     public interface IVocabularyUnitRepository
     {
         Task<VocabularyUnit> GetBy(LessonId id);
-        Task<WritingExercise> GetWritingExerciseBy(VocabularyId id);
     }
 }

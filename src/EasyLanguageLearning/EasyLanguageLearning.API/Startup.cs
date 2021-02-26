@@ -1,8 +1,11 @@
+using EasyLanguageLearning.Application.Evaluations;
 using EasyLanguageLearning.Application.LearningPaths;
 using EasyLanguageLearning.Domain.ContentSupplying;
+using EasyLanguageLearning.Domain.Evaluations;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Infrastructure;
 using EasyLanguageLearning.Infrastructure.ContentSupplying;
+using EasyLanguageLearning.Infrastructure.Evaluations;
 using EasyLanguageLearning.Infrastructure.LearningPaths;
 using EasyLanguageLearning.Infrastructure.VocabularyUnits;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +36,8 @@ namespace EasyLanguageLearning.API
             services.AddTransient<ILearningPathService, LearningPathService>();
             services.AddTransient<ILearningPathsRepository, LearningPathsRepository>();
             services.AddTransient<IVocabularyUnitRepository, VocabularyUnitRepository>();
+            services.AddTransient<IEvaluationsService, EvaluationsService>();
+            services.AddTransient<IEvaluationRepository, EvaluationRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

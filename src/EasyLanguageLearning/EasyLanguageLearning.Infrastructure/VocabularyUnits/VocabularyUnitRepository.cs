@@ -22,8 +22,5 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
                     .FirstOrDefault(vu => vu.LessonId == lessonId)
                 );
 
-        public Task<WritingExercise> GetWritingExerciseBy(VocabularyId id) =>
-            Task.Factory.StartNew(() =>
-                dataContext.WritingExercises.FirstOrDefault(vu => vu.VocabularyId == id));
     }
 }

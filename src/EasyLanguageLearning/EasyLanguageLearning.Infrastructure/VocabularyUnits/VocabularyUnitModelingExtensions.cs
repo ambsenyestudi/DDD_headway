@@ -48,7 +48,7 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
                 .IsRequired();
             
         }
-        //this cases a problem
+        //Move to evaluation modeling extensions
         public static void BuildWritingExerciseModel(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<WritingExercise>(entity =>

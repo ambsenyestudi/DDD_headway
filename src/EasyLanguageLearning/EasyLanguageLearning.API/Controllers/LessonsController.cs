@@ -53,18 +53,5 @@ namespace EasyLanguageLearning.API.Controllers
             var vocabularyUnit = await vocabularyUnitRepository.GetBy(new LessonId(lessonId));
             return vocabularyUnit.VocabularyItems;
         }
-        [HttpGet("Writing")]
-        public async Task<IEnumerable<WritingExercise>> GetWritingExercises(Guid lessonId)
-        {
-            //todo get vocabulary unit Id from lesson
-            var vocabularyUnit = await vocabularyUnitRepository.GetBy(new LessonId(lessonId));
-            var list = new List<WritingExercise>();
-            foreach( var voc in vocabularyUnit.VocabularyItems)
-            {
-                var writingExercise = await vocabularyUnitRepository.GetWritingExerciseBy(voc.Id);
-                list.Add(writingExercise);
-            }
-            return list;
-        }
     }
 }
