@@ -25,6 +25,10 @@ namespace EasyLanguageLearning.API.Seeding
                 {
                     SeedVocabulary.Populate(dbContext);
                 }
+                if(!dbContext.WritingExercises.Any())
+                {
+                    SeedExercises.Populate(dbContext);
+                }
                 
             }
         }

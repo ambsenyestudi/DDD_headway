@@ -1,7 +1,7 @@
 ﻿using EasyLanguageLearning.Domain.Shared.Kernel;
 using System;
 
-namespace EasyLanguageLearning.Domain.VocabularyUnits
+namespace EasyLanguageLearning.Domain.Evaluations
 {
     public class WritingExerciseId : ValueId
     {

@@ -1,4 +1,5 @@
-﻿using EasyLanguageLearning.Domain.LearningPaths;
+﻿using EasyLanguageLearning.Domain.Evaluations.Aggregate;
+using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
@@ -14,7 +15,7 @@ namespace EasyLanguageLearning.API.Seeding
         public const string EN_FR_FIRST_UNIT = "3322627b-bfa6-498d-914a-720f873b08a8";
         public static void Populate(DataContext dbContext)
         {
-            
+
             foreach (var item in dbContext.VocabularyUnits)
             {
                 dbContext.Remove(item);
@@ -24,24 +25,7 @@ namespace EasyLanguageLearning.API.Seeding
                 vocUnitId: new Guid(EN_FR_FIRST_UNIT));
             dbContext.VocabularyUnits.Add(vocUnit);
             dbContext.SaveChanges();
-            
-            var exercises = CreateWritingExercises(vocUnit);
-            
-            foreach (var exercise in exercises)
-            {
-                dbContext.WritingExercises.Add(exercise);
-            }
-            
-            dbContext.SaveChanges();
-          
-            
-        }
-
-        private static List<WritingExercise> CreateWritingExercises(VocabularyUnit vocUnit)
-        {
-            var result = vocUnit.VocabularyItems.Select(voc => vocUnit.CreateWritingExercise(voc)).ToList();
-            return result;
-        }
+        }       
 
         private static VocabularyUnit TranslateEnFr(Dictionary<string, string> transltions, 
             IsoCodes motherIsoCode = IsoCodes.en, 

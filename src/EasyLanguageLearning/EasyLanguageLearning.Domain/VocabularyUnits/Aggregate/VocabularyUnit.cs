@@ -30,17 +30,6 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
             VocabularyItems.Add(new Vocabulary(Guid.NewGuid(), Id, term));
         }
 
-        public WritingExercise CreateWritingExercise(Vocabulary vocabulary, Guid id = new Guid(), bool isLearningLanguageHeading = false)
-        {
-            if(vocabulary == null)
-            {
-                throw new ArgumentException($"Can't {nameof(CreateWritingExercise)}");
-            }
-            if(id ==  Guid.Empty)
-            {
-                id = Guid.NewGuid();
-            }
-            return new WritingExercise(id, vocabulary, isLearningLanguageHeading);
-        }
+        
     }
 }

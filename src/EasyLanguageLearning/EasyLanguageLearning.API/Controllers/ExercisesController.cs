@@ -1,5 +1,7 @@
 ﻿using EasyLanguageLearning.API.ViewModels;
+using EasyLanguageLearning.Application;
 using EasyLanguageLearning.Application.Evaluations;
+using EasyLanguageLearning.Domain.Evaluations;
 using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +33,7 @@ namespace EasyLanguageLearning.API.Controllers
         }
 
         [HttpPost("Writing")]
-        public async Task<string> EvaluateWriting([FromBody] WritingExerciseAnswerViewModel writtingAnswer)
+        public async Task<ExerciseOutcomeDTO> EvaluateWriting([FromBody] WritingExerciseAnswerViewModel writtingAnswer)
         {
             var result = await evaluationsService.EvaluateAnswer(new WritingExerciseId(writtingAnswer.Id), writtingAnswer.Answer);
             return result;

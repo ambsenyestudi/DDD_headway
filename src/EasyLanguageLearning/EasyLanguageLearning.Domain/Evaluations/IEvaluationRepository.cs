@@ -1,9 +1,5 @@
-﻿using EasyLanguageLearning.Domain.VocabularyUnits;
-using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using EasyLanguageLearning.Domain.Evaluations.Aggregate;
+using EasyLanguageLearning.Domain.VocabularyUnits;
 using System.Threading.Tasks;
 
 namespace EasyLanguageLearning.Domain.Evaluations

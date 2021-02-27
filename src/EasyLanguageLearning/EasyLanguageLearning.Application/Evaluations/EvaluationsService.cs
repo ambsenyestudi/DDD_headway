@@ -1,4 +1,5 @@
 ﻿using EasyLanguageLearning.Domain.Evaluations;
+using EasyLanguageLearning.Domain.Evaluations.Aggregate;
 using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
@@ -21,10 +22,15 @@ namespace EasyLanguageLearning.Application.Evaluations
             this.evaluationRepository = evaluationRepository;
         }
 
-        public async Task<string> EvaluateAnswer(WritingExerciseId writingExerciseId, string answer)
+        public async Task<ExerciseOutcomeDTO> EvaluateAnswer(WritingExerciseId writingExerciseId, string answer)
         {
-            var result = await Task.Factory.StartNew(() => "Good job");
-            return result;
+            var currentExercise = await evaluationRepository.GetWritingExerciseBy(writingExerciseId);
+            var result = currentExercise.Evaluate(answer);
+            return new ExerciseOutcomeDTO
+            {
+                Anser = result.CorrectAnswer,
+                Result = result.Result.ToString()
+            };
         }
 
         public async Task<IList<WritingExercise>> GetWritingExercisesBy(LessonId lessonId)

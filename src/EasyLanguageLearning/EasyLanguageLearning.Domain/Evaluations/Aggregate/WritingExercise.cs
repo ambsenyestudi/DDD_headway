@@ -1,6 +1,8 @@
-﻿using System;
+﻿using EasyLanguageLearning.Domain.VocabularyUnits;
+using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
+using System;
 
-namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
+namespace EasyLanguageLearning.Domain.Evaluations.Aggregate
 {
     public class WritingExercise
     {

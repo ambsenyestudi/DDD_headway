@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
+namespace EasyLanguageLearning.Domain.Evaluations.Aggregate
 {
     public enum TestResults
     {

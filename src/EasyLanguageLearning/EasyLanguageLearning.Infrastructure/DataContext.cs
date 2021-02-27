@@ -1,6 +1,8 @@
-﻿using EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate;
+﻿using EasyLanguageLearning.Domain.Evaluations.Aggregate;
+using EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate;
 using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
+using EasyLanguageLearning.Infrastructure.Evaluations;
 using EasyLanguageLearning.Infrastructure.LanguageCatalogs;
 using EasyLanguageLearning.Infrastructure.LearningPaths;
 using EasyLanguageLearning.Infrastructure.VocabularyUnits;
@@ -21,7 +23,6 @@ namespace EasyLanguageLearning.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Map table names
             modelBuilder.BuildLearningPathModel();
             modelBuilder.BuildLangaugeCatalogModel();
             modelBuilder.BuildVocabularyUnitModel();

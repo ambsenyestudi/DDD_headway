@@ -48,27 +48,6 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
                 .IsRequired();
             
         }
-        //Move to evaluation modeling extensions
-        public static void BuildWritingExerciseModel(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<WritingExercise>(entity =>
-                entity.HasKey(e => e.Id));
-            var writingExerciseBuilder = modelBuilder.Entity<WritingExercise>();
-            writingExerciseBuilder.Property(we => we.Id)
-                .HasConversion(weId => weId.Value,
-                guid => new WritingExerciseId(guid))
-            .IsRequired();
-            writingExerciseBuilder.Property(le => le.Id)
-                .HasConversion(wex => wex.Value, guid => new WritingExerciseId(guid))
-                .HasColumnName(nameof(WritingExercise.Id))
-                .IsRequired();
-            //todo
-            writingExerciseBuilder.Property(le => le.VocabularyId)
-                .HasConversion(woI => woI.Value, guid => new VocabularyId(guid))
-                .HasColumnName(nameof(WritingExercise.VocabularyId))
-                .IsRequired();
-
-            writingExerciseBuilder.OwnsOne(we => we.AnswerKey);
-        }
+        
     }
 }

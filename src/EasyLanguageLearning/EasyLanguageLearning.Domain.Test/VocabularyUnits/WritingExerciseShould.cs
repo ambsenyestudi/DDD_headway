@@ -1,4 +1,5 @@
-﻿using EasyLanguageLearning.Domain.LearningPaths;
+﻿using EasyLanguageLearning.Domain.Evaluations.Aggregate;
+using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
@@ -13,7 +14,7 @@ namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
         public readonly Iso EN_ISO = Iso.CreateIso(IsoCodes.en);
         public readonly Iso FR_ISO = Iso.CreateIso(IsoCodes.fr);
         private readonly VocabularyUnit vocabularyUnit;
-
+        /*
         public WritingExerciseShould()
         {
             var id = Guid.NewGuid();
@@ -88,6 +89,6 @@ namespace EasyLanguageLearning.Domain.Test.VocabularyUnits
 
             Assert.Equal(expectedTip, result);
         }
-
+        */
     }
 }
