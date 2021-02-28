@@ -15,11 +15,17 @@ namespace EasyLanguageLearning.Domain.Evaluations.Aggregate
 
         public Evaluation(Guid id, List<LessonId> lessons, List<Vocabulary> vocabularyItems)
         {
-            //check all voc items are in lessons
+            //How to check all items velong to lesson
+            if(NoLesson(lessons) || NoVocabulary(vocabularyItems))
+            {
+                throw new ArgumentException($"No lesson or no vocabulary for {nameof(Evaluation)} {id}");
+            }
             Id = new EvaluationId(id);
             LessonCollection = lessons;
             VocabularyIdCollection = vocabularyItems.Select(vo => vo.Id).ToList();
         }
+
+        
 
         public WritingExercise CreateWritingExercise(Vocabulary vocabulary, Guid id = new Guid(), bool isLearningLanguageHeading = false)
         {
@@ -34,5 +40,13 @@ namespace EasyLanguageLearning.Domain.Evaluations.Aggregate
             }
             return new WritingExercise(id, vocabulary, isLearningLanguageHeading);
         }
+
+        public bool NoLesson(List<LessonId> lessons) =>
+            lessons == null || !lessons.Any();
+
+        private bool NoVocabulary(List<Vocabulary> vocabularyItems) =>
+            vocabularyItems == null || !vocabularyItems.Any();
+
+        
     }
 }
