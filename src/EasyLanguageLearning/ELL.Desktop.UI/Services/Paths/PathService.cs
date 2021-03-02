@@ -11,7 +11,7 @@ namespace ELL.Desktop.UI.Services.Paths
 {
     public class PathService : IPathService
     {
-        private string url = "https://localhost:5001/api/LearningPath?iso=en";
+        private const string url = "https://localhost:5001/api/LearningPath?iso=en";
         private readonly HttpClient client;
 
         public PathService(HttpClient client)

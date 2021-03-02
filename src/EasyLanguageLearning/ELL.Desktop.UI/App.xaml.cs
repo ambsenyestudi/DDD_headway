@@ -1,4 +1,6 @@
 ﻿using ELL.Desktop.UI.Services;
+using ELL.Desktop.UI.Services.Courses;
+using ELL.Desktop.UI.Services.Lessons;
 using ELL.Desktop.UI.Services.Paths;
 using ELL.Desktop.UI.ViewModels;
 using ELL.Desktop.UI.ViewModels.Base;
@@ -30,6 +32,12 @@ namespace ELL.Desktop.UI
         private void ConfigureServices(ServiceCollection services)
         {
             services.AddSingleton<IMessenger, Messenger>();
+            services.AddHttpClient<ILessonService, LessonService>();
+            services.AddHttpClient<CourseService>();
+            services.AddScoped<ICourseService, CourseCacheDecorator>(provider =>
+                new CourseCacheDecorator(
+                    provider.GetService<CourseService>(),
+                    provider.GetService<IMemoryCache>()));
             services.AddHttpClient<PathService>();
             services.AddScoped<IPathService, PathCacheDecorator>(provider => 
                 new PathCacheDecorator(

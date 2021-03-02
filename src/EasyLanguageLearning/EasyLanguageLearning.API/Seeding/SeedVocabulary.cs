@@ -1,12 +1,10 @@
-﻿using EasyLanguageLearning.Domain.Evaluations.Aggregate;
-using EasyLanguageLearning.Domain.LearningPaths;
+﻿using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using EasyLanguageLearning.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EasyLanguageLearning.API.Seeding
 {
