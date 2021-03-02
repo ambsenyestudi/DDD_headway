@@ -1,16 +1,17 @@
-﻿using ELL.Desktop.UI.Services;
-using ELL.Desktop.UI.ViewModels.Base;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 
 namespace ELL.Desktop.UI.ViewModels
 {
     public class CoursesViewModel: ViewModelBase
     {
+        private readonly IMessenger messenger;
         public ObservableCollection<string> CourseList { get; }
-        public SimpleCommand ChooseCourseCommand { get; }
+        public RelayCommand ChooseCourseCommand { get; }
 
         private string selectedCourse;
-        private INavigationService navigationService;
 
         public string SelectedCourse
         {
@@ -18,26 +19,26 @@ namespace ELL.Desktop.UI.ViewModels
             set
             {
                 selectedCourse = value;
-                OnPropertyChanged();
-                ChooseCourseCommand.RaiseCanExecuteChange();
+                RaisePropertyChanged();
+                ChooseCourseCommand.RaiseCanExecuteChanged();
             }
         }
-        public CoursesViewModel(INavigationService navigationService)
+        public CoursesViewModel(IMessenger messenger)
         {
-            this.navigationService = navigationService;
+            this.messenger = messenger;
             CourseList = new ObservableCollection<string>
             {
                 "French 1"
             };
-            ChooseCourseCommand = new SimpleCommand(ChooseCourse, CanChooseCourse);
+            ChooseCourseCommand = new RelayCommand(ChooseCourse, CanChooseCourse);
         }
 
-        private bool CanChooseCourse(object arg) =>
+        private bool CanChooseCourse() =>
             !string.IsNullOrWhiteSpace(SelectedCourse);
 
-        private void ChooseCourse(object obj)
+        private void ChooseCourse()
         {
-            //todo
+            //todo ediator send pagenavigated
         }
     }
 }

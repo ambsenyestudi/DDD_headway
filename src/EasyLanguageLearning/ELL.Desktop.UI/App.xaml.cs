@@ -1,8 +1,12 @@
 ﻿using ELL.Desktop.UI.Services;
+using ELL.Desktop.UI.Services.Paths;
 using ELL.Desktop.UI.ViewModels;
 using ELL.Desktop.UI.ViewModels.Base;
 using ELL.Desktop.UI.Views;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using System.Windows;
 
 namespace ELL.Desktop.UI
@@ -25,15 +29,23 @@ namespace ELL.Desktop.UI
         }
         private void ConfigureServices(ServiceCollection services)
         {
-
+            services.AddSingleton<IMessenger, Messenger>();
+            services.AddHttpClient<PathService>();
+            services.AddScoped<IPathService, PathCacheDecorator>(provider => 
+                new PathCacheDecorator(
+                    provider.GetService<PathService>(),
+                    provider.GetService<IMemoryCache>()));
             services.AddSingleton<ITextService, TextService>();
-            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<LoadingViewModel>();
+            services.AddSingleton<INavigationPage, LoadingPage>();
             services.AddSingleton<CoursesViewModel>();
             services.AddSingleton<INavigationPage, CoursePage>();
             services.AddSingleton<WelcomeViewModel>();
             services.AddSingleton<INavigationPage, WelcomePage>();
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<MainWindow>();
+            services.AddMemoryCache();
+
         }
         
         protected async override void OnStartup(StartupEventArgs e)

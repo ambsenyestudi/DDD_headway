@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ELL.Desktop.UI"
+        xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
     <Grid>
-        <Frame NavigationUIVisibility="Hidden" Content="{Binding CurrentPage, Mode=TwoWay}"/>
+        <Frame NavigationUIVisibility="Hidden" Content="{Binding CurrentPage, Mode=OneWay}"/>
     </Grid>
 </Window>

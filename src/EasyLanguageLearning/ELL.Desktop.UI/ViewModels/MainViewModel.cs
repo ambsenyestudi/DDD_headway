@@ -1,15 +1,20 @@
-﻿using ELL.Desktop.UI.Services;
+﻿using ELL.Desktop.UI.Notifications;
 using ELL.Desktop.UI.ViewModels.Base;
+using ELL.Desktop.UI.Views;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 
 namespace ELL.Desktop.UI.ViewModels
 {
+    //event to command no more now
+    //https://github.com/microsoft/XamlBehaviorsWpf
     public class MainViewModel: ViewModelBase
     {
-        private readonly ITextService textService;
-        private readonly INavigationService navigationService;
+        private readonly string homeViewName;
+        private readonly IMessenger messenger;
         private readonly IEnumerable<INavigationPage> pageCollection;
         private Page currentPage;
         public Page CurrentPage
@@ -17,51 +22,48 @@ namespace ELL.Desktop.UI.ViewModels
             get => currentPage;
             set
             {
-                if (currentPage != value)
-                {
-                    currentPage = value;
-                    OnPropertyChanged();
-
-                }
+                currentPage = value;
+                RaisePropertyChanged();
             }
         }
 
-        public MainViewModel(INavigationService navigationService, ITextService textService, IEnumerable<INavigationPage> pages)
+        public MainViewModel(IEnumerable<INavigationPage> pages, IMessenger messenger)
         {
-            this.textService = textService;
-            this.navigationService = navigationService;
-            this.pageCollection = pages;
-            InitNavService();
+            this.messenger = messenger;
+            pageCollection = pages;
+            homeViewName = nameof(WelcomePage);
             
-        }
-        private void InitNavService()
-        {
-            UpdateCurrentPage(navigationService.CurrentPage);
-            navigationService.NavigatedPage += NavigationStack_PageNavigated;
-            navigationService.InitPageNames(pageCollection.Select(x => x.PageName));
-            
-            
-            
+            InitNavigation();
         }
 
-        private void NavigationStack_PageNavigated(string pageName) =>
-            UpdateCurrentPage(pageName);
+        private void InitNavigation()
+        {
+            
+            UpdateCurrentPage(nameof(LoadingPage));
+            messenger.Register<PageNavigated>(this, 
+                page => UpdateCurrentPage(page.PageName));
+        }
 
         private void UpdateCurrentPage(string pageName)
         {
-
-            var navPage = pageCollection.First(pa => pa.PageName == pageName);
-
-            if (navPage != null)
+            if (!IsCurrentPage(pageName))
             {
-                var currPage = navPage as Page;
-                CurrentPage = currPage;
+
+                var navPage = pageCollection.First(pa => pa.PageName == pageName);
+
+                if (navPage != null)
+                {
+                    var currPage = navPage as Page;
+                    CurrentPage = currPage;
+                }
             }
 
         }
-        protected override void Dispose()
-        {
-            navigationService.NavigatedPage -= NavigationStack_PageNavigated;
-        }
+
+
+
+        private bool IsCurrentPage(string pageName) =>
+            CurrentPage !=null &&
+            ((INavigationPage)CurrentPage).PageName == pageName; 
     }
 }

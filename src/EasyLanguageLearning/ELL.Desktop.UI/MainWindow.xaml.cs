@@ -10,8 +10,11 @@ namespace ELL.Desktop.UI
     {
         public MainWindow(MainViewModel mainViewModel)
         {
+            
             this.DataContext = mainViewModel;
             InitializeComponent();
         }
+
+        
     }
 }

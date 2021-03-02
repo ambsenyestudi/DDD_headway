@@ -1,0 +1,23 @@
+﻿<Page x:Class="ELL.Desktop.UI.Views.LoadingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ELL.Desktop.UI.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+      x:Name="loadingPage"
+      Title="LoadingPage">
+    <Behaviors:Interaction.Triggers>
+        <Behaviors:EventTrigger EventName="Loaded" SourceObject="{Binding ElementName=loadingPage}">
+            <Behaviors:InvokeCommandAction Command="{Binding LoadPathsCommand}"/>
+        </Behaviors:EventTrigger>
+    </Behaviors:Interaction.Triggers>
+    <Grid Grid.RowSpan="3" Background="#55AAAAAA">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Loading" HorizontalAlignment="Center" Margin="20 0" FontSize="24"/>
+            <ProgressBar MinHeight="20" IsIndeterminate="True" />
+        </StackPanel>
+    </Grid>
+</Page>
