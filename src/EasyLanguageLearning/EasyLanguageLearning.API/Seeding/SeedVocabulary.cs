@@ -36,7 +36,7 @@ namespace EasyLanguageLearning.API.Seeding
             }
             var motherIso = Iso.CreateIso(motherIsoCode);
             var learningIso = Iso.CreateIso(learningIsoCode);
-            var lessonId = new LessonId(new Guid(SeedLearningPath.EN_FR_FIRST_LESSON_ID));
+            var lessonId = new LessonId(new Guid(SeedLearningPath.enFR["LessonId"]));
             var vocUnit =  new VocabularyUnit(vocUnitId,
                 lessonId,
                 motherIso,

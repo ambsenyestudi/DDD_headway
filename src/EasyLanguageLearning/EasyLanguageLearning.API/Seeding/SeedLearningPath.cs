@@ -4,18 +4,50 @@ using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using EasyLanguageLearning.Infrastructure;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EasyLanguageLearning.API.Seeding
 {
+    //"da05e6c5-fa7e-4296-9a22-e6fadef8c165"
+    //"d79c6f6f-a5be-401d-8362-25486188e6d7"
     public class SeedLearningPath
     {
-        public const string EN_FR_FIRST_LESSON_ID = "e667a2bd-2f01-43f9-b796-2c322690c6f7";
-        public const string EN_FR_LEARNING_PATH_ID = "82d83571-5fdd-40c0-ac46-0eea57a19ab0";
         public const string FIRST_LESSON_NAME = "Hello world!";
-        public const string EN_FR_FIRST_COURSE_ID = "90b94554-5e8e-4406-9e4b-c1b90fd4cb2c";
-        //"6f7567bd-55d0-4986-98f0-05ffb8fdc7d2"
-        //"75480967-c4a4-46ea-b26b-e301a017c3c9"
+        #region EN_FR
+        public static readonly Dictionary<string, string> enFR = new Dictionary<string, string>
+        {
+            ["PathId"] = "82d83571-5fdd-40c0-ac46-0eea57a19ab0",
+            ["CourseId"] = "90b94554-5e8e-4406-9e4b-c1b90fd4cb2c",
+            ["LessonId"] = "e667a2bd-2f01-43f9-b796-2c322690c6f7"
+        };
+        //"7ed72ffb-0c56-414c-ac59-70846f003949"
+        //"e6c5d53d-edd9-4b05-9efe-7225eaaf5ab6"
+        //"535c4bab-cfc3-4acb-89d5-96872ce68b11"
+        #endregion EN_FR
+        #region EN_ES
+        public static readonly Dictionary<string, string> enES = new Dictionary<string, string>
+        {
+            ["PathId"] = "6f7567bd-55d0-4986-98f0-05ffb8fdc7d2",
+            ["CourseId"] = "634aa2e5-6ceb-4f57-82d1-988db75f6c95",
+            ["LessonId"] = "a6bc084e-1fdd-4609-b41d-38332f0ccf5c"
+        };
+        //"681ba771-4bb0-463e-8726-7da30642d47f"
+        //"c080e65f-5326-467d-9cb3-cff9d0c8f3b3"
+        //"8a7cbbac-d25a-408a-a259-c09bff4eec21"
+        #endregion EN_ES
+        #region EN_GR
+        public static readonly Dictionary<string, string> enGR = new Dictionary<string, string>
+        {
+            ["PathId"] = "75480967-c4a4-46ea-b26b-e301a017c3c9",
+            ["CourseId"] = "53afcd3d-34c9-4871-9892-e91c1e5fe5c2",
+            ["LessonId"] = "f2c86f70-fb6a-41de-8df5-ef0e953c6646"
+        };
+        //"c5c9058f-210b-43c2-aeeb-637de2d3b133"
+        //"59b12ef4-42bb-4dfe-b79a-068551de19ae"
+        //"183cea14-b1a6-4b7c-b554-ceb700b15cc3"
+        #endregion EN_GR
+
         private static Guid LanguageCatalogId 
         {
             get => new Guid(SeedLanguageCatalog.LANGUAGE_CATALOG_ID);
@@ -39,34 +71,48 @@ namespace EasyLanguageLearning.API.Seeding
             {
                 dbContext.Remove(item);
             }
-
+            //var idsList = ProduceIds(10);
             dbContext.SaveChanges();
 
             var currLangCatalog = dbContext.LanguageCatalogs.FirstOrDefault(lc => lc.Id == new LanguageCatalogId(LanguageCatalogId));
-            
-            var frenchLang = currLangCatalog.Items.FirstOrDefault(ll => ll.Id == new LearningLanguageId(EnFrenchId));
-            dbContext.LearningPaths.Add(CreateaggregateWithFirstCourseAndLesson(frenchLang, EN_FR_LEARNING_PATH_ID));
-            dbContext.SaveChanges();
 
-            var EN_ES_LEARNING_PATH_ID = Guid.NewGuid().ToString();
-            var spanishLang = currLangCatalog.Items.FirstOrDefault(ll => ll.Id == new LearningLanguageId(EnSpanishId));
-            dbContext.LearningPaths.Add(CreateaggregateWithFirstCourseAndLesson(spanishLang, EN_ES_LEARNING_PATH_ID, learningIso:IsoCodes.es));
-            dbContext.SaveChanges();
-
-            var EN_GR_LEARNING_PATH_ID = Guid.NewGuid().ToString();
-            var germanLang = currLangCatalog.Items.FirstOrDefault(ll => ll.Id == new LearningLanguageId(EnGermanId));
-            dbContext.LearningPaths.Add(CreateaggregateWithFirstCourseAndLesson(germanLang, EN_GR_LEARNING_PATH_ID, learningIso: IsoCodes.de));
-            dbContext.SaveChanges();
-
+            CreateFrenchPath(currLangCatalog, dbContext);
+            CreateSpanishPath(currLangCatalog, dbContext);
+            CreateGermanPath(currLangCatalog, dbContext);
         }
-        public static LearningPath CreateaggregateWithFirstCourseAndLesson(LearningLanguage learningLanguage, string guid = "", IsoCodes motherIso = IsoCodes.en, IsoCodes learningIso = IsoCodes.fr)
+
+        public static void CreateFrenchPath(LanguageCatalog languageCatalog, DataContext dbContext)
         {
-            var result = CreateAggregate(learningLanguage, motherIso, guid);
-            var couresId = result.AddCourseFromLevel(1, EN_FR_FIRST_COURSE_ID);
-            var currLesson = (motherIso == IsoCodes.en && learningIso == IsoCodes.fr)
-                ? EN_FR_FIRST_LESSON_ID
-                : Guid.NewGuid().ToString();
-            result.AddLessonToCourse(couresId, FIRST_LESSON_NAME, 1, currLesson);
+            var frenchLang = languageCatalog.Items.FirstOrDefault(ll => ll.Id == new LearningLanguageId(EnFrenchId));
+            dbContext.LearningPaths.Add(CreateaggregateWithFirstCourseAndLesson(frenchLang,
+                pathId: enFR["PathId"], firstCouresId: enFR["CourseId"],
+                firstLessonId: enFR["LessonId"]));
+            dbContext.SaveChanges();
+        }
+
+        public static void CreateSpanishPath(LanguageCatalog languageCatalog, DataContext dbContext)
+        {
+            var spanishLang = languageCatalog.Items.FirstOrDefault(ll => ll.Id == new LearningLanguageId(EnSpanishId));
+            dbContext.LearningPaths.Add(CreateaggregateWithFirstCourseAndLesson(spanishLang,
+                pathId: enES["PathId"], firstCouresId: enES["CourseId"],
+                firstLessonId: enES["LessonId"], learningIso: IsoCodes.es));
+            dbContext.SaveChanges();
+        }
+
+        public static void CreateGermanPath(LanguageCatalog languageCatalog, DataContext dbContext)
+        {
+            var germanLang = languageCatalog.Items.FirstOrDefault(ll => ll.Id == new LearningLanguageId(EnGermanId));
+            dbContext.LearningPaths.Add(CreateaggregateWithFirstCourseAndLesson(germanLang,
+                pathId: enGR["PathId"], firstCouresId: enGR["CourseId"],
+                firstLessonId: enGR["LessonId"], learningIso: IsoCodes.de));
+            dbContext.SaveChanges();
+        }
+
+        public static LearningPath CreateaggregateWithFirstCourseAndLesson(LearningLanguage learningLanguage, string pathId = "", string firstCouresId = "", string firstLessonId = "", IsoCodes motherIso = IsoCodes.en, IsoCodes learningIso = IsoCodes.fr)
+        {
+            var result = CreateAggregate(learningLanguage, motherIso, AssureId(pathId));
+            var couresId = result.AddCourseFromLevel(1, AssureId(firstCouresId));
+            result.AddLessonToCourse(couresId, FIRST_LESSON_NAME, 1, AssureId(firstLessonId));
             return result;
         }
 
@@ -74,5 +120,22 @@ namespace EasyLanguageLearning.API.Seeding
             Guid.TryParse(guidRaw, out Guid guid)
                 ? new LearningPath(guid, learningLanguage, Iso.CreateIso(motherIso))
                 : new LearningPath(Guid.NewGuid(), learningLanguage, Iso.CreateIso(motherIso));
+
+        private static string AssureId(string id) =>
+            string.IsNullOrWhiteSpace(id)
+                ? Guid.NewGuid().ToString()
+                : id;
+
+        private static List<string> ProduceIds(int idCount = 10)
+        {
+            var resultList = new List<string>();
+            for (int i = 0; i < idCount; i++)
+            {
+                resultList.Add(Guid.NewGuid().ToString());
+            }
+            return resultList;
+        }
+
+
     }
 }
