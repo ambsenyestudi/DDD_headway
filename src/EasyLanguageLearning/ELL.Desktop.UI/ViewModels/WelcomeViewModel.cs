@@ -4,6 +4,7 @@ using ELL.Desktop.UI.Services;
 using ELL.Desktop.UI.Services.Courses;
 using ELL.Desktop.UI.Services.Lessons;
 using ELL.Desktop.UI.Services.Paths;
+using ELL.Desktop.UI.Services.VocabularyUnits;
 using ELL.Desktop.UI.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -14,15 +15,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace ELL.Desktop.UI.ViewModels
 {
     public class WelcomeViewModel : ViewModelBase
     {
+        public Dispatcher Dispatcher { get; }
+
         private readonly IMessenger messenger;
         private readonly IMemoryCache memoryCache;
         private readonly ICourseService courseService;
         private readonly ILessonService lessonService;
+        private readonly IVocabularyService vocabularyService;
 
         public ObservableCollection<LearningPath> PathList { get; private set; } = new ObservableCollection<LearningPath>();
         private LearningPath selectedPath;
@@ -67,9 +72,27 @@ namespace ELL.Desktop.UI.ViewModels
             { 
                 selectedLesson = value;
                 RaisePropertyChanged();
+                if(selectedLesson!=null)
+                {
+                    UpdateVocabularyList();
+                }
             }
         }
 
+        
+
+        public ObservableCollection<Vocabulary> VocabularyList { get; private set; } = new ObservableCollection<Vocabulary>();
+        private Vocabulary selectedVocabulary;
+
+        public Vocabulary SelectedVocabulary
+        {
+            get => selectedVocabulary;
+            set
+            {
+                selectedVocabulary = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private bool isPathChoosen;
 
@@ -87,15 +110,37 @@ namespace ELL.Desktop.UI.ViewModels
         public RelayCommand ChoosePathCommand { get; }
         public RelayCommand UpdatePathListCommand { get; }
 
-        public WelcomeViewModel(IMessenger messenger, ICourseService courseService, ILessonService lessonService, IMemoryCache memoryCache)
+        public WelcomeViewModel(IMessenger messenger, ICourseService courseService, ILessonService lessonService, IVocabularyService vocabularyService, IMemoryCache memoryCache)
         {
+            Dispatcher = Dispatcher.CurrentDispatcher;
             this.messenger = messenger;
             this.memoryCache = memoryCache;
             this.courseService = courseService;
             this.lessonService = lessonService;
+            this.vocabularyService = vocabularyService;
             ChoosePathCommand = new RelayCommand(ChoosePath, CanChoosePath);
             UpdatePathListCommand = new RelayCommand(UpdatePathList);
+            LessonList.Add(new Lesson { Name = "No items" });
         }
+
+        private async void UpdateVocabularyList()
+        {
+            var vocabularyList = await vocabularyService.GetVocabulary(SelectedLesson.Id);
+            await UpdateVocabularyList(vocabularyList);
+        }
+
+        private Task UpdateVocabularyList(List<Vocabulary> vocabularyList) =>
+            Task.Factory.StartNew(() =>
+            {
+                VocabularyList.Clear();
+                foreach (var vocabularyItem in vocabularyList)
+                {
+                    VocabularyList.Add(vocabularyItem);
+                }
+            },
+                CancellationToken.None, TaskCreationOptions.None,
+                TaskScheduler.FromCurrentSynchronizationContext());
+
         private async void UpdateLessonList()
         {
             var lessonList = await lessonService.GetLessons(SelectedCourse.Id);
@@ -105,11 +150,15 @@ namespace ELL.Desktop.UI.ViewModels
         private Task UpdateLessonListAsync(List<Lesson> lessonList) =>
             Task.Factory.StartNew(() =>
             {
+
                 LessonList.Clear();
-                foreach (var lesson in lessonList)
+                Dispatcher.BeginInvoke(() =>
                 {
-                    LessonList.Add(lesson);
-                }
+                    foreach (var lesson in lessonList)
+                    {
+                        LessonList.Add(lesson);
+                    }
+                });
             },
                 CancellationToken.None, TaskCreationOptions.None,
                 TaskScheduler.FromCurrentSynchronizationContext());

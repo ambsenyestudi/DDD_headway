@@ -15,12 +15,12 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
         {
             this.dataContext = dataContext;
         }
-        public Task<VocabularyUnit> GetBy(LessonId lessonId) => 
-            Task.Factory.StartNew(() => 
-                dataContext.VocabularyUnits
-                    .Include(x => x.VocabularyItems)
-                    .FirstOrDefault(vu => vu.LessonId == lessonId)
-                );
+        public Task<VocabularyUnit> GetBy(LessonId lessonId) =>
+            Task.Factory.StartNew(() => {
+                //var unitList = dataContext.VocabularyUnits.Include(x => x.VocabularyItems).ToList();
+                var unitList = dataContext.VocabularyUnits.ToList();
+                return unitList.FirstOrDefault(vu => vu.LessonId == lessonId);
+                });
 
     }
 }
