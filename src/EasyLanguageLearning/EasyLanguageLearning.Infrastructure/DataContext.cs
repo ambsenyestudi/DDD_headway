@@ -16,6 +16,7 @@ namespace EasyLanguageLearning.Infrastructure
         public DbSet<LearningPath> LearningPaths { get; set; }
         public DbSet<LanguageCatalog> LanguageCatalogs { get; set; }
         public DbSet<VocabularyUnit> VocabularyUnits { get; set; }
+        public DbSet<Vocabulary> Vocabularies { get; set; }
         public DbSet<WritingExercise> WritingExercises { get; set; }
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {   

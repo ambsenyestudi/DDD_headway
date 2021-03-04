@@ -22,6 +22,7 @@ namespace EasyLanguageLearning.API.Seeding
                 En_FR_Translations,
                 vocUnitId: new Guid(EN_FR_FIRST_UNIT));
             dbContext.VocabularyUnits.Add(vocUnit);
+            
             dbContext.SaveChanges();
         }       
 

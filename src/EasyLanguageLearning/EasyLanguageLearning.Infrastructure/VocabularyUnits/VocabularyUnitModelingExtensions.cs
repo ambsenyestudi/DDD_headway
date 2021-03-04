@@ -27,15 +27,17 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
             languageContentBuilder.Property(le => le.LearningLanguageIso)
                 .HasConversion(conv.IsoConverter);
             BuildVocabularyItemModel(modelBuilder);
-            languageContentBuilder.HasMany<Vocabulary>(vu => vu.VocabularyItems)
-                .WithOne()
-                .HasForeignKey(v => v.VocabularyUnitId);
-                
+            languageContentBuilder.HasMany<Vocabulary>(vu => vu.VocabularyItems).WithOne();
+
+
         }
         
         private static void BuildVocabularyItemModel(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Vocabulary>().HasKey(vo => vo.Id);
+            //one to many relations
+            modelBuilder.Entity<Vocabulary>().HasOne<VocabularyUnit>().WithMany().HasForeignKey(e => e.VocabularyUnitId);
+            
             var vocabularyBuilder = modelBuilder.Entity<Vocabulary>();
             vocabularyBuilder.Property(vo => vo.Id)
                 .HasConversion(
