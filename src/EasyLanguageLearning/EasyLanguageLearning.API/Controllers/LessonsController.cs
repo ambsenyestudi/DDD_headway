@@ -29,7 +29,7 @@ namespace EasyLanguageLearning.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<LessonViewModel>> Get(Guid courseId)
         {
-            var path = await contentSupplyingRepository.GetLearningPath(Iso.CreateIso(IsoCodes.en), Iso.CreateIso(IsoCodes.fr));
+            var path = await contentSupplyingRepository.GetLearningPath(courseId);
             var course = path.Courses.FirstOrDefault(c => c.Id.AsGuid() == courseId);
             if(course!=null)
             {
@@ -51,6 +51,10 @@ namespace EasyLanguageLearning.API.Controllers
         {
             //todo get vocabulary unit Id from lesson
             var vocabularyUnit = await vocabularyUnitRepository.GetBy(new LessonId(lessonId));
+            if(vocabularyUnit == null)
+            {
+                return new List<Vocabulary>();
+            }
             return vocabularyUnit.VocabularyItems;
         }
     }

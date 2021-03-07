@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EasyLanguageLearning.Domain.Shared.Kernel.Languages
 {
@@ -21,7 +22,7 @@ namespace EasyLanguageLearning.Domain.Shared.Kernel.Languages
         }
 
         public override string ToString() =>
-            IsoCode;
+            IsoCode.ToString();
 
         public static Iso CreateIso(IsoCodes isoCode)
         {
@@ -29,6 +30,18 @@ namespace EasyLanguageLearning.Domain.Shared.Kernel.Languages
                 ? string.Empty
                 : isoCode.ToString();
             return new Iso(iso);
+        }
+
+        public static bool TryParse(string input, out Iso iso)
+        {
+            if (!Enum.TryParse<IsoCodes>(input, true, out IsoCodes currIso))
+            {
+                iso = null;
+                return false;
+            }
+            iso = CreateIso(currIso);
+            return true;
+
         }
     }
 }

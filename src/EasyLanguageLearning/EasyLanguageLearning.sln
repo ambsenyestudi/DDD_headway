@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyLanguageLearning.Domain
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{C9E12EEE-8A1C-45F2-B814-BB3D9FB452C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELL.Desktop.UI", "ELL.Desktop.UI\ELL.Desktop.UI.csproj", "{B42C7C4C-340F-4843-A681-7B9CC13A847A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ELL.Desktop.UI", "ELL.Desktop.UI\ELL.Desktop.UI.csproj", "{B42C7C4C-340F-4843-A681-7B9CC13A847A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLanguageLearning.SeedingBackgroundProcess", "EasyLanguageLearning.SeedingBackgroundProcess\EasyLanguageLearning.SeedingBackgroundProcess.csproj", "{41B79B47-1815-4BAC-87DC-B2F20A9F99B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{B42C7C4C-340F-4843-A681-7B9CC13A847A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B42C7C4C-340F-4843-A681-7B9CC13A847A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B42C7C4C-340F-4843-A681-7B9CC13A847A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41B79B47-1815-4BAC-87DC-B2F20A9F99B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B79B47-1815-4BAC-87DC-B2F20A9F99B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B79B47-1815-4BAC-87DC-B2F20A9F99B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B79B47-1815-4BAC-87DC-B2F20A9F99B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

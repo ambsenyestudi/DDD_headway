@@ -1,8 +1,6 @@
 ﻿using EasyLanguageLearning.API.ViewModels;
 using EasyLanguageLearning.Application.LearningPaths;
-using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -39,5 +37,17 @@ namespace EasyLanguageLearning.API.Controllers
                     });
             return pathVMs;
         }
+        [HttpPost]
+        public async Task<Guid> InsertPath([FromBody] LearningPathDTO learningPath)
+        {
+            if(!learningPath.CourseList.Any())
+            {
+                return Guid.Empty;
+            }
+            var id = await learningPathService.Insert(learningPath);
+            return id;    
+        }
+        
+
     }
 }

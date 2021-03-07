@@ -7,5 +7,7 @@ namespace EasyLanguageLearning.Domain.LanguageCatalogs
     public interface ILanguageCatalogRepository
     {
         Task<LanguageCatalog> GetBy(Iso iso);
+        Task<LanguageCatalog> GetBy(LanguageCatalogId iso);
+        Task<LanguageCatalogId> Upsert(LanguageCatalog catalog);
     }
 }

@@ -2,48 +2,40 @@
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
-using EasyLanguageLearning.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace EasyLanguageLearning.API.Seeding
+namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
 {
-    public static class SeedVocabulary
+    public class SeedVocabulary
     {
         public const string EN_FR_FIRST_UNIT = "3322627b-bfa6-498d-914a-720f873b08a8";
-        public static void Populate(DataContext dbContext)
-        {
+        public const string EN_FR_FIRST_LESSON = "e667a2bd-2f01-43f9-b796-2c322690c6f7";
 
-            foreach (var item in dbContext.VocabularyUnits)
-            {
-                dbContext.Remove(item);
-            }
+
+        public static VocabularyUnit Create()
+        {
             var vocUnit = TranslateEnFr(
                 En_FR_Translations,
                 vocUnitId: new Guid(EN_FR_FIRST_UNIT));
-
-            dbContext.Vocabularies.AddRange(vocUnit.VocabularyItems);
-            dbContext.VocabularyUnits.Add(vocUnit);
-            
-            dbContext.SaveChanges();
-            var unit = dbContext.VocabularyUnits.First();//.Find("3322627b-bfa6-498d-914a-720f873b08a8");
-            var v = "x";
-        }       
-
-        private static VocabularyUnit TranslateEnFr(Dictionary<string, string> transltions, 
-            IsoCodes motherIsoCode = IsoCodes.en, 
-            IsoCodes learningIsoCode = IsoCodes.fr, 
+            return vocUnit;
+        }
+        private static VocabularyUnit TranslateEnFr(Dictionary<string, string> transltions,
+            IsoCodes motherIsoCode = IsoCodes.en,
+            IsoCodes learningIsoCode = IsoCodes.fr,
             Guid vocUnitId = new Guid())
         {
-            if(vocUnitId == Guid.Empty)
+            if (vocUnitId == Guid.Empty)
             {
                 vocUnitId = Guid.NewGuid();
             }
             var motherIso = Iso.CreateIso(motherIsoCode);
             var learningIso = Iso.CreateIso(learningIsoCode);
-            var lessonId = new LessonId(new Guid(SeedLearningPath.enFR["LessonId"]));
-            var vocUnit =  new VocabularyUnit(vocUnitId,
+            var lessonId = new LessonId(new Guid(EN_FR_FIRST_LESSON));//SeedLearningPath.enFR["LessonId"]));
+            var vocUnit = new VocabularyUnit(vocUnitId,
                 lessonId,
                 motherIso,
                 learningIso);

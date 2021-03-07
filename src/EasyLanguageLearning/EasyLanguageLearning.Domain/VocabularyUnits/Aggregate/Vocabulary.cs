@@ -11,15 +11,17 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
         #region EF core
         public string MotherLanguageTerm { get; protected set; }
         public string LearningLanguageTerm { get; protected set; }
+        public VocabularyUnit VocabularyUnit { get; protected set;  }
         protected Vocabulary()
         {
         }
         #endregion Ef core
 
-        public Vocabulary(Guid id, VocabularyUnitId unitId, TranslatedContent translatedContent)
+        public Vocabulary(Guid id, VocabularyUnit unit, TranslatedContent translatedContent)
         {
             Id = new VocabularyId(id);
-            VocabularyUnitId = unitId;
+            VocabularyUnitId = unit.Id;
+            VocabularyUnit = unit;
             MotherLanguageTerm = translatedContent.MotherLanguageTerm;
             LearningLanguageTerm = translatedContent.LearningLanguageTerm;
 

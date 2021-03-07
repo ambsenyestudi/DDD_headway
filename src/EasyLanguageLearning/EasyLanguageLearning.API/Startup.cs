@@ -1,11 +1,14 @@
 using EasyLanguageLearning.Application.Evaluations;
+using EasyLanguageLearning.Application.LanguageCatalog;
 using EasyLanguageLearning.Application.LearningPaths;
 using EasyLanguageLearning.Domain.ContentSupplying;
 using EasyLanguageLearning.Domain.Evaluations;
+using EasyLanguageLearning.Domain.LanguageCatalogs;
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Infrastructure;
 using EasyLanguageLearning.Infrastructure.ContentSupplying;
 using EasyLanguageLearning.Infrastructure.Evaluations;
+using EasyLanguageLearning.Infrastructure.LanguageCatalogs;
 using EasyLanguageLearning.Infrastructure.LearningPaths;
 using EasyLanguageLearning.Infrastructure.VocabularyUnits;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +36,8 @@ namespace EasyLanguageLearning.API
 
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<ILanguageCatalogService, LanguageCatalogService>();
+            services.AddTransient<ILanguageCatalogRepository, LanguageCatalogRepository>();
             services.AddTransient<ILearningPathService, LearningPathService>();
             services.AddTransient<ILearningPathsRepository, LearningPathsRepository>();
             services.AddTransient<IVocabularyUnitRepository, VocabularyUnitRepository>();

@@ -2,7 +2,6 @@
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using conv = EasyLanguageLearning.Infrastructure.DataModelConverters;
 
 namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
@@ -26,8 +25,11 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
                 .HasConversion(conv.IsoConverter);
             languageContentBuilder.Property(le => le.LearningLanguageIso)
                 .HasConversion(conv.IsoConverter);
+
+            languageContentBuilder.HasMany<Vocabulary>(vu => vu.VocabularyItems)
+                .WithOne(vo=>vo.VocabularyUnit)
+                .HasForeignKey(vo=>vo.VocabularyUnitId);
             BuildVocabularyItemModel(modelBuilder);
-            languageContentBuilder.HasMany<Vocabulary>(vu => vu.VocabularyItems).WithOne();
 
 
         }
@@ -37,8 +39,11 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
             modelBuilder.Entity<Vocabulary>().HasKey(vo => vo.Id);
             //one to many relations
             modelBuilder.Entity<Vocabulary>().HasOne<VocabularyUnit>().WithMany().HasForeignKey(e => e.VocabularyUnitId);
-            
+           
+
+
             var vocabularyBuilder = modelBuilder.Entity<Vocabulary>();
+            vocabularyBuilder.HasOne<VocabularyUnit>(x => x.VocabularyUnit).WithMany(vu=>vu.VocabularyItems).HasForeignKey(vo => vo.VocabularyUnitId);
             vocabularyBuilder.Property(vo => vo.Id)
                 .HasConversion(
                     woI => woI.Value, 

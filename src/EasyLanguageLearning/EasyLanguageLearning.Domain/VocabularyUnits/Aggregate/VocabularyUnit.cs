@@ -27,7 +27,7 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
         public void AddVocabulary(TranslatedContent term)
         {
             //Todo test that have matching isos
-            VocabularyItems.Add(new Vocabulary(Guid.NewGuid(), Id, term));
+            VocabularyItems.Add(new Vocabulary(Guid.NewGuid(), this, term));
         }
 
         

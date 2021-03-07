@@ -1,4 +1,3 @@
-using EasyLanguageLearning.API.Seeding;
 using EasyLanguageLearning.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +21,7 @@ namespace EasyLanguageLearning.API
                     var context = services.GetRequiredService<DataContext>();
                     //                    context.Database.Migrate();
                     context.Database.EnsureCreated();
-                    SeedData.Initialize(services);
+                    //SeedData.Initialize(services);
                 }
                 catch (Exception ex)
                 {
