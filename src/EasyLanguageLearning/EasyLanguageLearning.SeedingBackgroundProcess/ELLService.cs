@@ -1,8 +1,10 @@
 ﻿using EasyLanguageLearning.Application.LanguageCatalog;
 using EasyLanguageLearning.Application.LearningPaths;
+using EasyLanguageLearning.Application.VocabularyUnits;
 using EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate;
 using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using EasyLanguageLearning.SeedingBackgroundProcess.Stores;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,14 @@ namespace EasyLanguageLearning.SeedingBackgroundProcess
         private readonly ELLGateway gateway;
         private readonly LearningPathStore learningPathStore;
         private readonly LanguageCatalogStore languageCatalogStore;
+        private readonly VocabularyStore vocabularyStore;
 
         public ELLService(ELLGateway gateway, LearningPathStore learningPathStore, LanguageCatalogStore languageCatalogStore, VocabularyStore vocabularyStore)
         {
             this.gateway = gateway;
             this.learningPathStore = learningPathStore;
             this.languageCatalogStore = languageCatalogStore;
+            this.vocabularyStore = vocabularyStore;
         }
 
         public async Task WaitForReady()
@@ -65,9 +69,40 @@ namespace EasyLanguageLearning.SeedingBackgroundProcess
             await InsertFrench(catalog);
             await InsertSpanish(catalog);
             await InsertGerman(catalog);
+
+            await InsertFrentVocabularyLesson1();
             
         }
-               
+
+        private async Task InsertFrentVocabularyLesson1()
+        {
+            var vocUnit = vocabularyStore.CreateEnFr(vocabularyStore.GetEnFrLesson1());
+            var unitDTO = ToVocabularyUnitDTO(vocUnit);
+            await gateway.PostUnit(unitDTO);
+        }
+
+        private VocabularyUnitDTO ToVocabularyUnitDTO(VocabularyUnit vocUnit) =>
+            new VocabularyUnitDTO
+            {
+                Id = vocUnit.Id.Value,
+                LessonId = vocUnit.LessonId.Value,
+                LearningIso = vocUnit.LearningLanguageIso.ToString(),
+                MotherIso = vocUnit.MotherLanguageIso.ToString(),
+                VocabularyList = ToTranslationDTO(vocUnit.VocabularyItems)
+            };
+
+        private TranslationDTO[] ToTranslationDTO(ICollection<Vocabulary> vocabularyItems) =>
+            vocabularyItems
+                .Select(v => ToTranslationDTO(v))
+                .ToArray();
+
+        private TranslationDTO ToTranslationDTO(Vocabulary vocabulary) =>
+            new TranslationDTO
+            {
+                Original = vocabulary.MotherLanguageTerm,
+                Translation = vocabulary.LearningLanguageTerm
+            };
+
         private async Task InsertFrench(LanguageCatalog catalog)
         {
             var frenchLang = learningPathStore.GetFrenchLang(catalog);

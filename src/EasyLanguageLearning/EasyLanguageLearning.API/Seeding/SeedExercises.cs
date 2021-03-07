@@ -11,6 +11,7 @@ namespace EasyLanguageLearning.API.Seeding
 {
     public class SeedExercises
     {
+        /*
         private static Dictionary<string, string> writingIdDictionary =
             new Dictionary<string, string>
             {
@@ -49,5 +50,6 @@ namespace EasyLanguageLearning.API.Seeding
 
         private static Guid MapExerciseId(Vocabulary voc) =>
             new Guid(writingIdDictionary[voc.MotherLanguageTerm]);
+        */
     }
 }

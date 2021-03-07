@@ -29,9 +29,10 @@ namespace EasyLanguageLearning.Infrastructure
             modelBuilder.BuildVocabularyUnitModel();
             modelBuilder.BuildWritingExerciseModel();
 
-            modelBuilder.SeedLanguageCatalogs();
+
 
             /*
+            modelBuilder.SeedLanguageCatalogs();
             modelBuilder.SeedLeaningPaths(this);
             var unit = SeedVocabulary.Create();
             modelBuilder.Entity<Vocabulary>().HasData(unit.VocabularyItems);

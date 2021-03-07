@@ -1,4 +1,5 @@
 ﻿using EasyLanguageLearning.API.ViewModels;
+using EasyLanguageLearning.Application.VocabularyUnits;
 using EasyLanguageLearning.Domain.ContentSupplying;
 using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
@@ -56,6 +57,13 @@ namespace EasyLanguageLearning.API.Controllers
                 return new List<Vocabulary>();
             }
             return vocabularyUnit.VocabularyItems;
+        }
+
+        [HttpPost("Content")]
+        public async Task<Guid> UpsertVocabulary([FromBody] VocabularyUnitDTO vocabularyUnit)
+        {
+            //todo invoKe service
+            return Guid.Empty;
         }
     }
 }

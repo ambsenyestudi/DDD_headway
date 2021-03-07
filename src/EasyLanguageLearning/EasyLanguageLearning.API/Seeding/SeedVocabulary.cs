@@ -11,6 +11,7 @@ namespace EasyLanguageLearning.API.Seeding
 {
     public static class SeedVocabulary
     {
+        /*
         public const string EN_FR_FIRST_UNIT = "3322627b-bfa6-498d-914a-720f873b08a8";
         public static void Populate(DataContext dbContext)
         {
@@ -68,5 +69,6 @@ namespace EasyLanguageLearning.API.Seeding
                 ["No"] = "Non",
                 ["Good bye"] = "Au revoir"
             };
+        */
     }
 }

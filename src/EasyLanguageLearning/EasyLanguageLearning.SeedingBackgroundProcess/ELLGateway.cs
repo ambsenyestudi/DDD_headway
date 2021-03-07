@@ -1,5 +1,6 @@
 ﻿using EasyLanguageLearning.Application.LanguageCatalog;
 using EasyLanguageLearning.Application.LearningPaths;
+using EasyLanguageLearning.Application.VocabularyUnits;
 using EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate;
 using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using Newtonsoft.Json;
@@ -19,6 +20,8 @@ namespace EasyLanguageLearning.SeedingBackgroundProcess
         public const string READY_ENDPOINT = "Ready";
         public const string LEARNING_PATH_ENDPOINT = "LearningPath";
         public const string LANGUAGE_CATALOG_ENDPOINT = "Catalog";
+        public const string LESSONS = "Lessons";
+        public const string CONTENT = "Content";
 
         private readonly HttpClient client;
 
@@ -59,7 +62,13 @@ namespace EasyLanguageLearning.SeedingBackgroundProcess
             var response = await PostAsync(LEARNING_PATH_ENDPOINT, json);
             response.EnsureSuccessStatusCode();
         }
-
+        public async Task PostUnit(VocabularyUnitDTO unitDTO)
+        {
+            var json = JsonConvert.SerializeObject(unitDTO);
+            var url = ComposeEnpdpoints(LESSONS, CONTENT);
+            var response = await PostAsync(url, json);
+            response.EnsureSuccessStatusCode();
+        }
         private async Task<HttpResponseMessage> PostAsync(string enpoint, string json)
         {
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -68,5 +77,7 @@ namespace EasyLanguageLearning.SeedingBackgroundProcess
 
         public string ComposeEnpdpoints(params string[] endpointList) =>
             string.Join("/", endpointList);
+
+        
     }
 }
