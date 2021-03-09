@@ -9,9 +9,11 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
     {
         public VocabularyUnitId Id { get; protected set; }
         public LessonId LessonId { get; protected set; }
-        public ICollection<Vocabulary> VocabularyItems { get; protected set; } = new List<Vocabulary>();
+        private VocabularyCollection vocabularyItems = new VocabularyCollection();
         public Iso MotherLanguageIso { get; protected set; }
         public Iso LearningLanguageIso { get; protected set; }
+        public bool HasIems { get => !vocabularyItems.IsEmpty; }
+
         protected VocabularyUnit()
         {
 
@@ -27,9 +29,10 @@ namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
         public void AddVocabulary(TranslatedContent term)
         {
             //Todo test that have matching isos
-            VocabularyItems.Add(new Vocabulary(Guid.NewGuid(), this, term));
+            vocabularyItems.Add(new Vocabulary(Guid.NewGuid(), this, term));
         }
-
+        public IEnumerable<Vocabulary> ListItems() =>
+            vocabularyItems.ListVocabulary();
         
     }
 }

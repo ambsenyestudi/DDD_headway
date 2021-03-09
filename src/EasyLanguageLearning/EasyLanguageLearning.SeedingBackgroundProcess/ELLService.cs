@@ -88,10 +88,10 @@ namespace EasyLanguageLearning.SeedingBackgroundProcess
                 LessonId = vocUnit.LessonId.Value,
                 LearningIso = vocUnit.LearningLanguageIso.ToString(),
                 MotherIso = vocUnit.MotherLanguageIso.ToString(),
-                VocabularyList = ToTranslationDTO(vocUnit.VocabularyItems)
+                VocabularyList = ToTranslationDTO(vocUnit.ListItems())
             };
 
-        private TranslationDTO[] ToTranslationDTO(ICollection<Vocabulary> vocabularyItems) =>
+        private TranslationDTO[] ToTranslationDTO(IEnumerable<Vocabulary> vocabularyItems) =>
             vocabularyItems
                 .Select(v => ToTranslationDTO(v))
                 .ToArray();

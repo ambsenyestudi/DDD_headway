@@ -2,6 +2,7 @@
 using EasyLanguageLearning.Domain.VocabularyUnits;
 using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,5 +23,17 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
                 return unitList.FirstOrDefault(vu => vu.LessonId == lessonId);
                 });
 
+        public Guid Insert(VocabularyUnit vocUnit)
+        {
+            dataContext.VocabularyUnits.Add(vocUnit);
+            dataContext.SaveChanges();
+            
+            return EnsureVocalularyUnitIsThere(vocUnit.Id);
+        }
+
+        private Guid EnsureVocalularyUnitIsThere(VocabularyUnitId id) =>
+            dataContext.VocabularyUnits.Any(vu => vu.Id == id)
+                ? id.Value
+                : Guid.Empty;
     }
 }

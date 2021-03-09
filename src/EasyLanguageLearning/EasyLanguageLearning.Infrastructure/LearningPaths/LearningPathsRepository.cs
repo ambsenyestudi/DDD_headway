@@ -2,6 +2,8 @@
 using EasyLanguageLearning.Domain.LearningPaths;
 using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using EasyLanguageLearning.Domain.VocabularyUnits;
+using EasyLanguageLearning.Domain.VocabularyUnits.Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +15,13 @@ namespace EasyLanguageLearning.Infrastructure.ContentSupplying
     public class LearningPathsRepository : ILearningPathsRepository
     {
         private readonly DataContext context;
-        public LearningPathsRepository(DataContext context)
+        private readonly IVocabularyUnitRepository vocabularyRepository;
+
+        public LearningPathsRepository(DataContext context,
+            IVocabularyUnitRepository vocabularyRepository)
         {
             this.context = context;
+            this.vocabularyRepository = vocabularyRepository;
         }
 
         public Task<LearningPath> GetLearningPath(Iso motherIso, Iso learningIso) =>
@@ -37,7 +43,17 @@ namespace EasyLanguageLearning.Infrastructure.ContentSupplying
             var path = context.LearningPaths.FirstOrDefault(lp => lp.Id == updatingPath.Id);
             if(path == null)
             {
-                return await Insert(updatingPath);
+                var newPathId = await Insert(updatingPath);
+                foreach (var course in updatingPath.Courses)
+                {
+                    foreach (var lesson in course.Lessons)
+                    {
+                        var id = Guid.NewGuid();
+                        var vocUnit = new VocabularyUnit(id, lesson.Id, updatingPath.MotherLanguageIso, updatingPath.LearningLanguageIso);
+                        var vocUnitId = vocabularyRepository.Insert(vocUnit);
+                    }
+                }
+                return newPathId;
             }
             var existingId = await EnsurePathIsThere(updatingPath.MotherLanguageIso,updatingPath.LearningLanguageIso);
             if(existingId != Guid.Empty)
@@ -46,8 +62,8 @@ namespace EasyLanguageLearning.Infrastructure.ContentSupplying
             }
             context.Update<LearningPath>(updatingPath);
             context.SaveChanges();
-            var id = await EnsurePathIsThere(updatingPath.MotherLanguageIso, updatingPath.LearningLanguageIso);
-            return id;
+            var learningPathId = await EnsurePathIsThere(updatingPath.MotherLanguageIso, updatingPath.LearningLanguageIso);
+            return learningPathId;
         }
 
         private async Task<Guid> Insert(LearningPath insertingPath)

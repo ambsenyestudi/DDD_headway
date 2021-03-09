@@ -56,12 +56,13 @@ namespace EasyLanguageLearning.API.Controllers
             {
                 return new List<Vocabulary>();
             }
-            return vocabularyUnit.VocabularyItems;
+            return vocabularyUnit.ListItems();
         }
 
         [HttpPost("Content")]
-        public async Task<Guid> UpsertVocabulary([FromBody] VocabularyUnitDTO vocabularyUnit)
+        public async Task<Guid> UpsertVocabulary([FromBody] VocabularyUnitDTO vocabularyUnitInput)
         {
+            var vocabularyUnit = await vocabularyUnitRepository.GetBy(new LessonId(vocabularyUnitInput.LessonId));
             //todo invoKe service
             return Guid.Empty;
         }

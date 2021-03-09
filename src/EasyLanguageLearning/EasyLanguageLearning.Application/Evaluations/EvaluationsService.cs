@@ -38,13 +38,13 @@ namespace EasyLanguageLearning.Application.Evaluations
             var list = new List<WritingExercise>();
             var vocabularyUnit = await exerciseRepository.GetBy(lessonId);
 
-            if( vocabularyUnit==null || !vocabularyUnit.VocabularyItems.Any())
+            if( vocabularyUnit==null || !vocabularyUnit.HasIems)
             {
                 return list;
             }
 
-            
-            foreach (var voc in vocabularyUnit.VocabularyItems)
+            var vocabularyItems = vocabularyUnit.ListItems();
+            foreach (var voc in vocabularyItems)
             {
                 var writingExercise = await evaluationRepository.GetWritingExerciseBy(voc.Id);
                 list.Add(writingExercise);

@@ -4,6 +4,7 @@ using EasyLanguageLearning.Domain.LanguageCatalogs;
 using EasyLanguageLearning.Domain.LanguageCatalogs.Aggregate;
 using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
 using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+using EasyLanguageLearning.Domain.VocabularyUnits;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace EasyLanguageLearning.Infrastructure.LearningPaths
         private readonly ILearningPathsRepository repository;
         private readonly ILanguageCatalogRepository catalogRepository;
 
-        public LearningPathService(ILearningPathsRepository repository, ILanguageCatalogRepository catalogRepository)
+        public LearningPathService(ILearningPathsRepository repository, 
+            ILanguageCatalogRepository catalogRepository)
         {
             this.repository = repository;
             this.catalogRepository = catalogRepository;
@@ -47,7 +49,7 @@ namespace EasyLanguageLearning.Infrastructure.LearningPaths
             {
                 return Guid.Empty;
             }
-
+            
             return await repository.Upsert(insertingPath);
         }
 

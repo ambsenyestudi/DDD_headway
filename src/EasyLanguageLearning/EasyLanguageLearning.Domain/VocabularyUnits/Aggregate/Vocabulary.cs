@@ -1,10 +1,13 @@
-﻿using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
+﻿using EasyLanguageLearning.Domain.LearningPaths.Aggregate;
+using EasyLanguageLearning.Domain.Shared.Kernel.Languages;
 using System;
 
 namespace EasyLanguageLearning.Domain.VocabularyUnits.Aggregate
 {
     public class Vocabulary
     {
+        public Level CourseLevel { get; }
+        public Level LessonLevel { get; }
         public VocabularyId Id { get; protected set; }
         public VocabularyUnitId VocabularyUnitId { get; protected set; }
 

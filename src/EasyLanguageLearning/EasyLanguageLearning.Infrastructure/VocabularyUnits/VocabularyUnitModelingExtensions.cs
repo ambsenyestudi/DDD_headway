@@ -25,10 +25,12 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
                 .HasConversion(conv.IsoConverter);
             languageContentBuilder.Property(le => le.LearningLanguageIso)
                 .HasConversion(conv.IsoConverter);
-
+            //todo map collection property
+            /*
             languageContentBuilder.HasMany<Vocabulary>(vu => vu.VocabularyItems)
                 .WithOne(vo=>vo.VocabularyUnit)
                 .HasForeignKey(vo=>vo.VocabularyUnitId);
+            */
             BuildVocabularyItemModel(modelBuilder);
 
 
@@ -43,7 +45,8 @@ namespace EasyLanguageLearning.Infrastructure.VocabularyUnits
 
 
             var vocabularyBuilder = modelBuilder.Entity<Vocabulary>();
-            vocabularyBuilder.HasOne<VocabularyUnit>(x => x.VocabularyUnit).WithMany(vu=>vu.VocabularyItems).HasForeignKey(vo => vo.VocabularyUnitId);
+            //vocabularyBuilder.HasOne<VocabularyUnit>(x => x.VocabularyUnit).WithMany(vu=>vu.VocabularyItems).HasForeignKey(vo => vo.VocabularyUnitId);
+            //todo map list relation
             vocabularyBuilder.Property(vo => vo.Id)
                 .HasConversion(
                     woI => woI.Value, 
